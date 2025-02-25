@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "306015957702",
+    "project_id": "redditatte",
+    "storage_bucket": "redditatte.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306015957702:android:91dde9402dd43370ec1dc7",
+        "android_client_info": {
+          "package_name": "com.example.reddit_attempt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPOGmCY8KY-FXuy7A9rywMEJ3Ev1j8iwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306015957702:android:e63669789a3cdfdfec1dc7",
+        "android_client_info": {
+          "package_name": "com.example.reddit_attempt2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPOGmCY8KY-FXuy7A9rywMEJ3Ev1j8iwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

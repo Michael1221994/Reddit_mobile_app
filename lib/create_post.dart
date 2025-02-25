@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class CreatePost extends StatefulWidget {
+  const CreatePost({super.key});
+
+  @override
+  State<CreatePost> createState() => _CreatePostState();
+}
+
+class _CreatePostState extends State<CreatePost> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+  TextEditingController TitleController = TextEditingController();
+  TextEditingController TextController =  TextEditingController();
+  TextEditingController LinkController =  TextEditingController();
+  TextField? linktextfield;
+  bool showfield=false;
+  bool showpoll= false;
+    // List to hold dynamic TextFields
+  List<Widget> _textFields = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            
+            TextField(controller: TitleController, decoration:InputDecoration(
+              labelText: 'Title', labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1, ),
+              border: InputBorder.none,
+            ) ,),
+            Wrap(
+              spacing: 8.0, // gap between adjacent chips
+              runSpacing: 4.0, // gap between lines
+              children: _textFields,
+            ),
+            TextField(
+              controller: TextController,
+              decoration: InputDecoration(
+                labelText: "body text (optional)", 
+              ),        
+            ),
+            Row(
+              children: [
+                IconButton(onPressed: addtextfield, icon: Icon(Icons.link, color: Colors.black,)),
+                IconButton(onPressed: _pickImage, icon: Icon(Icons.photo, color: Colors.black,)),
+                //IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_outline_outlined, color: Colors.black,)),
+                IconButton(onPressed: 
+                  (){setState(() {
+                    showpoll=!showpoll;
+                });}
+                , icon: Icon(Icons.poll_outlined, color: Colors.black,)),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+    Future<void> _pickImage() async {
+    final XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = selectedImage;
+    });
+  }
+
+  void addtextfield(){
+    setState(() {
+      if(showfield==false){
+        if(linktextfield==null){
+          linktextfield=TextField(
+          controller: LinkController,
+           decoration: InputDecoration(
+              labelText: "link", 
+        )     
+      );
+        }
+        
+      _textFields.add(linktextfield!);  
+      showfield= true;
+      }
+      else{
+        _textFields.remove(linktextfield!);
+        showfield=false;
+        linktextfield=null;
+      }
+    });
+  }
+}
