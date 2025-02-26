@@ -17,11 +17,7 @@ class _PollState extends State<Poll1> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Poll ends"),
-      ),
-      body: Column(
+    return  Column(
         children: [
           TextField(
               controller: poll1,
@@ -47,8 +43,7 @@ class _PollState extends State<Poll1> {
             child: Icon(Icons.add),
           )
         ],
-      ),
-    );
+      );
   }
 
   Widget buildPollRow(int index) {

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Poll1(),//splashscreen(),//container(post_type: "post_type", title: "title", text: "Text",   number_of_comments: "number_of_comments", number_of_upvotes: "number_of_upvotes", number_of_downvotes: "number_of_downvotes", flaires: ["flaires"],  image_name: 'lib/assets/reddit.png', video_name: "video_name", link: "link")//splashscreen(),
+      home: CreatePost(),//splashscreen(),//container(post_type: "post_type", title: "title", text: "Text",   number_of_comments: "number_of_comments", number_of_upvotes: "number_of_upvotes", number_of_downvotes: "number_of_downvotes", flaires: ["flaires"],  image_name: 'lib/assets/reddit.png', video_name: "video_name", link: "link")//splashscreen(),
       
     );
   }

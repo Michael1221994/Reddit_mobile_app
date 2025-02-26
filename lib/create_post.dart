@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reddit_attempt2/poll1.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -40,6 +41,7 @@ class _CreatePostState extends State<CreatePost> {
               runSpacing: 4.0, // gap between lines
               children: _textFields,
             ),
+            
             TextField(
               controller: TextController,
               decoration: InputDecoration(
@@ -51,11 +53,7 @@ class _CreatePostState extends State<CreatePost> {
                 IconButton(onPressed: addtextfield, icon: Icon(Icons.link, color: Colors.black,)),
                 IconButton(onPressed: _pickImage, icon: Icon(Icons.photo, color: Colors.black,)),
                 //IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_outline_outlined, color: Colors.black,)),
-                IconButton(onPressed: 
-                  (){setState(() {
-                    showpoll=!showpoll;
-                });}
-                , icon: Icon(Icons.poll_outlined, color: Colors.black,)),
+                IconButton(onPressed: _showPollDialog, icon: Icon(Icons.poll_outlined, color: Colors.black,)),
               ],
             )
           ],
@@ -92,4 +90,30 @@ class _CreatePostState extends State<CreatePost> {
       }
     });
   }
+
+  void addpoll(){
+    setState(() {
+      showpoll=!showpoll;
+      if(showpoll){
+        _textFields.add(Poll1());
+      }
+      else {
+        _textFields.remove(Poll1());
+      }
+    });
+
+  }
+
+  void _showPollDialog() {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Poll1(), // Your Poll1 widget
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), // Optional: for rounded corners
+      );
+    },
+  );
+}
+
 }
