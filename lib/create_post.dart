@@ -109,7 +109,15 @@ class _CreatePostState extends State<CreatePost> {
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        child: Poll1(), // Your Poll1 widget
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: MediaQuery.of(context).size.height * 0.5,
+            child: Poll1(),
+            ),
+        ), // Your Poll1 widget
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)), // Optional: for rounded corners
       );
     },

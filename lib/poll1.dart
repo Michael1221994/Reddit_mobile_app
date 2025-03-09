@@ -14,36 +14,42 @@ class _PollState extends State<Poll1> {
   List<int> pollIndices = [];
   int nextPollIndex = 1;
   int counter=2;
+  late List<Row> pollrows;
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
-        children: [
-          TextField(
-              controller: poll1,
-              decoration: InputDecoration(
-                labelText: "Poll1",
-              ),
-            ),
+    return  Scaffold(
+        appBar: AppBar(
+          leading: IconButton(onPressed:(){Navigator.pop(context);}, icon: Icon(Icons.cancel_outlined),),
+        ),
+        body: Column(
+          children: [
             TextField(
-              controller: poll2,
-              decoration: InputDecoration(
-                labelText: "Poll2",
+                controller: poll1,
+                decoration: InputDecoration(
+                  labelText: "Poll1",
+                ),
+              ),
+              TextField(
+                controller: poll2,
+                decoration: InputDecoration(
+                  labelText: "Poll2",
+                ),
+              ),
+            Expanded(
+              child: ListView(
+                children: pollIndices.map((index) => buildPollRow(counter)).toList(),
               ),
             ),
-          Expanded(
-            child: ListView(
-              children: pollIndices.map((index) => buildPollRow(counter)).toList(),
-            ),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              addPoll();
-            },
-            child: Icon(Icons.add),
-          )
-        ],
-      );
+            FloatingActionButton(
+              onPressed: () {
+                addPoll();
+              },
+              child: Icon(Icons.add),
+            )
+          ],
+        ),
+    );
   }
 
   Widget buildPollRow(int index) {
@@ -55,7 +61,7 @@ class _PollState extends State<Poll1> {
           child: TextField(
             controller: controller,
             decoration: InputDecoration(
-              labelText: "Poll $index",
+              labelText: "Other poll",
             ),
           ),
         ),
@@ -68,7 +74,7 @@ class _PollState extends State<Poll1> {
   }
 
   void addPoll() {
-    if(counter<=5){
+    if(counter<6){
       setState(() {
       pollIndices.add(nextPollIndex);
       nextPollIndex++;

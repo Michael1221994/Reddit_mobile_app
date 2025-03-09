@@ -1,102 +1,100 @@
 import 'package:flutter/material.dart';
 
-class Poll extends StatefulWidget {
-  const Poll({super.key});
+class Poll1 extends StatefulWidget {
+  const Poll1({Key? key}) : super(key: key);
 
   @override
-  State<Poll> createState() => _PollState();
+  State<Poll1> createState() => _PollState();
 }
 
-class _PollState extends State<Poll> {
+class _PollState extends State<Poll1> {
   TextEditingController poll1=TextEditingController();
   TextEditingController poll2=TextEditingController();
-  //TextEditingController poll3=TextEditingController();
-  //TextEditingController poll4=TextEditingController();
-  //TextEditingController poll5=TextEditingController();
-  //TextEditingController poll6=TextEditingController();
-  List<Widget> polls=<Widget>[];
-  Map<String, TextEditingController> controllers = {};
-  //Row? pollrow;
+  Map<int, TextEditingController> controllers = {};
+  List<int> pollIndices = [];
+  List<TextEditingController> TextList=[]; 
+  int nextPollIndex = 1;
   int counter=2;
-  late final String pollcontrol;  
+  var i=0;
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Poll ends"),
-        
-      ),
-      body: Center(
-        child: Column(
+    return  Scaffold(
+        appBar: AppBar(
+          leading: IconButton(onPressed:(){Navigator.pop(context);}, icon: Icon(Icons.cancel_outlined),),
+        ),
+        body: Column(
           children: [
             TextField(
-              controller: poll1,
-              decoration: InputDecoration(
-                labelText: "Poll1",
+                controller: poll1,
+                decoration: InputDecoration(
+                  labelText: "Poll1",
+                ),
               ),
-            ),
-            TextField(
-              controller: poll2,
-              decoration: InputDecoration(
-                labelText: "Poll2",
+              TextField(
+                controller: poll2,
+                decoration: InputDecoration(
+                  labelText: "Poll2",
+                ),
               ),
-            ),
             Expanded(
               child: ListView(
-                children: polls,
-
+                children: pollIndices.map((index) => buildPollRow(counter)).toList(),
               ),
             ),
-            FloatingActionButton(onPressed: addpoll, child: Text("Add poll"),)
+            FloatingActionButton(
+              onPressed: () {
+                addPoll();
+              },
+              child: Icon(Icons.add),
+            )
           ],
         ),
-      ),
-
     );
   }
 
-  void addpoll() {
+  Widget buildPollRow(int index) {
+    //var controller = controllers.putIfAbsent(index, () => TextEditingController());
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: TextList[i],
+            decoration: InputDecoration(
+              labelText: "Other poll",
+            ),
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.cancel),
+          onPressed: () => removePoll(index),
+        ),
+      ],
+    );
+  }
+
+  void addPoll() {
     if(counter<6){
-      String pollId = 'poll$counter';
-      TextEditingController controller = getcontroller(pollId);
-      
-        Row pollrow= Row(
-          children: [
-             TextField(
-              controller: getcontroller(pollId),
-              decoration: InputDecoration(
-                labelText: "poll$counter",
-                
-                
-              ),
-            ), 
-           
-            //IconButton(onPressed: removepoll(pollrow), icon: Icon(Icons.cancel_outlined)),
-          ],
-          
-        );
       setState(() {
-        polls.add(pollrow);
-        counter++;  
-      }); 
-    }    
-  }
-
-  
-
-  TextEditingController getcontroller(String id){
-    if(!controllers.containsKey(id)){
-      controllers[id]= TextEditingController();
+      i++;
+      pollIndices.add(nextPollIndex);
+      nextPollIndex++;
+      counter++;
+      
+    });
     }
-    return controllers[id]!;
+    
   }
 
-  void removepoll (pollrow){
+  void removePoll(int index) {
     setState(() {
-      polls.remove(pollrow);
-      pollrow=null;
+      pollIndices.remove(index);
+      //controllers[index]?.dispose(); // Dispose the controller
+      //controllers.remove(index);
+      TextList[i]?.dispose();
       counter--;
+      i--;
     });
   }
 }
