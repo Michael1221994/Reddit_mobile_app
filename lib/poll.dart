@@ -8,62 +8,59 @@ class Poll1 extends StatefulWidget {
 }
 
 class _PollState extends State<Poll1> {
-  TextEditingController poll1=TextEditingController();
-  TextEditingController poll2=TextEditingController();
-  Map<int, TextEditingController> controllers = {};
-  List<int> pollIndices = [];
-  List<TextEditingController> TextList=[]; 
-  int nextPollIndex = 1;
-  int counter=2;
-  var i=0;
-
+  TextEditingController poll1 = TextEditingController();
+  TextEditingController poll2 = TextEditingController();
+  
+  List<TextEditingController> textList = []; // List for poll option controllers
+  List<int> pollIndices = []; // Track added polls
+  int nextPollIndex = 0;
+  int counter = 2; // Already have 2 polls
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: AppBar(
-          leading: IconButton(onPressed:(){Navigator.pop(context);}, icon: Icon(Icons.cancel_outlined),),
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.cancel_outlined),
         ),
-        body: Column(
-          children: [
-            TextField(
-                controller: poll1,
-                decoration: InputDecoration(
-                  labelText: "Poll1",
-                ),
-              ),
-              TextField(
-                controller: poll2,
-                decoration: InputDecoration(
-                  labelText: "Poll2",
-                ),
-              ),
-            Expanded(
-              child: ListView(
-                children: pollIndices.map((index) => buildPollRow(counter)).toList(),
-              ),
-            ),
-            FloatingActionButton(
-              onPressed: () {
-                addPoll();
+      ),
+      body: Column(
+        children: [
+          TextField(
+            controller: poll1,
+            decoration: InputDecoration(labelText: "Poll 1"),
+          ),
+          TextField(
+            controller: poll2,
+            decoration: InputDecoration(labelText: "Poll 2"),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: pollIndices.length,
+              itemBuilder: (context, index) {
+                return buildPollRow(index);
               },
-              child: Icon(Icons.add),
-            )
-          ],
-        ),
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: addPoll,
+            child: Icon(Icons.add),
+          ),
+        ],
+      ),
     );
   }
 
   Widget buildPollRow(int index) {
-    //var controller = controllers.putIfAbsent(index, () => TextEditingController());
     return Row(
       children: [
         Expanded(
           child: TextField(
-            controller: TextList[i],
-            decoration: InputDecoration(
-              labelText: "Other poll",
-            ),
+            controller: textList[index],
+            decoration: InputDecoration(labelText: "Other poll"),
           ),
         ),
         IconButton(
@@ -75,26 +72,32 @@ class _PollState extends State<Poll1> {
   }
 
   void addPoll() {
-    if(counter<6){
+    if (counter < 6) {
       setState(() {
-      i++;
-      pollIndices.add(nextPollIndex);
-      nextPollIndex++;
-      counter++;
-      
-    });
+        pollIndices.add(nextPollIndex);
+        textList.add(TextEditingController()); // Add new controller
+        nextPollIndex++;
+        counter++;
+      });
     }
-    
   }
 
   void removePoll(int index) {
     setState(() {
-      pollIndices.remove(index);
-      //controllers[index]?.dispose(); // Dispose the controller
-      //controllers.remove(index);
-      TextList[i]?.dispose();
+      textList[index].dispose(); // Dispose of the controller
+      textList.removeAt(index); // Remove controller from the list
+      pollIndices.removeAt(index); // Remove poll from indices
       counter--;
-      i--;
     });
+  }
+
+  @override
+  void dispose() {
+    poll1.dispose();
+    poll2.dispose();
+    for (var controller in textList) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 }
