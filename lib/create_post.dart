@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit_attempt2/poll1.dart';
+import 'package:reddit_attempt2/poll.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});

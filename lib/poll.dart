@@ -10,7 +10,13 @@ class Poll1 extends StatefulWidget {
 class _PollState extends State<Poll1> {
   TextEditingController poll1 = TextEditingController();
   TextEditingController poll2 = TextEditingController();
-  
+  Map<int, TextEditingController> textControllers = {
+  0: TextEditingController(), // Controller for the first input field
+  1: TextEditingController(), // Controller for the second input field
+  2: TextEditingController(), // Controller for the third input field
+  3: TextEditingController(), // Controller for the fourth input field
+};
+
   List<TextEditingController> textList = []; // List for poll option controllers
   List<int> pollIndices = []; // Track added polls
   int nextPollIndex = 0;
@@ -42,6 +48,7 @@ class _PollState extends State<Poll1> {
               itemCount: pollIndices.length,
               itemBuilder: (context, index) {
                 return buildPollRow(index);
+
               },
             ),
           ),
@@ -54,42 +61,44 @@ class _PollState extends State<Poll1> {
     );
   }
 
-  Widget buildPollRow(int index) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: textList[index],
-            decoration: InputDecoration(labelText: "Other poll"),
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.cancel),
-          onPressed: () => removePoll(index),
-        ),
-      ],
-    );
-  }
-
   void addPoll() {
-    if (counter < 6) {
-      setState(() {
-        pollIndices.add(nextPollIndex);
-        textList.add(TextEditingController()); // Add new controller
-        nextPollIndex++;
-        counter++;
-      });
-    }
-  }
-
-  void removePoll(int index) {
+  if (counter < 6) {
     setState(() {
-      textList[index].dispose(); // Dispose of the controller
-      textList.removeAt(index); // Remove controller from the list
-      pollIndices.removeAt(index); // Remove poll from indices
-      counter--;
+      int newIndex = textControllers.length;
+      textControllers[newIndex] = TextEditingController(); // Dynamically add a new controller to the map
+      pollIndices.add(newIndex); // Use newIndex to track added polls correctly
+      nextPollIndex++;
+      counter++;
     });
   }
+}
+
+Widget buildPollRow(int index) {
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          controller: textControllers[pollIndices[index]], // Correctly reference the controller based on current index
+          decoration: InputDecoration(labelText: "Other poll"),
+        ),
+      ),
+      IconButton(
+        icon: Icon(Icons.cancel),
+        onPressed: () => removePoll(index),
+      ),
+    ],
+  );
+}
+
+void removePoll(int index) {
+  setState(() {
+    int keyToRemove = pollIndices[index];
+    textControllers[keyToRemove]?.dispose(); // Dispose of the controller
+    textControllers.remove(keyToRemove); // Remove controller from the map
+    pollIndices.removeAt(index); // Adjust indices list accordingly
+    counter--;
+  });
+}
 
   @override
   void dispose() {
