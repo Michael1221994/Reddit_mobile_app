@@ -1,8 +1,11 @@
+import 'dart:ffi';
+import'create_post.dart';
 import 'package:flutter/material.dart';
 
 class Poll1 extends StatefulWidget {
-  const Poll1({Key? key}) : super(key: key);
+    final Function(Widget)? onSave; 
 
+  const Poll1({Key? key, this.onSave}) : super(key: key);
   @override
   State<Poll1> createState() => _PollState();
 }
@@ -32,6 +35,7 @@ class _PollState extends State<Poll1> {
           },
           icon: Icon(Icons.cancel_outlined),
         ),
+        
       ),
       body: Column(
         children: [
@@ -52,9 +56,23 @@ class _PollState extends State<Poll1> {
               },
             ),
           ),
-          FloatingActionButton(
-            onPressed: addPoll,
-            child: Icon(Icons.add),
+          Container(
+            decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(5)),
+            child: GestureDetector(
+              onTap: addPoll,
+              child: const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                
+                 children: 
+                 [
+                  Icon(Icons.add),
+                  SizedBox(width: 5,),
+                  Text("Add Poll")
+                  ],
+                
+                ),
+            
+            ),
           ),
         ],
       ),
@@ -71,6 +89,22 @@ class _PollState extends State<Poll1> {
       counter++;
     });
   }
+}
+
+bool validdata(){
+  if(poll1.text.isEmpty || poll2.text.isEmpty){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+void saveandclose(){
+  if(validdata()){
+    widget.onSave?.call(this.widget);
+  }
+ 
 }
 
 Widget buildPollRow(int index) {
