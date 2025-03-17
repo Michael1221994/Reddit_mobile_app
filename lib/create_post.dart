@@ -40,9 +40,7 @@ class _CreatePostState extends State<CreatePost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        
-      ),
+     
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -52,10 +50,12 @@ class _CreatePostState extends State<CreatePost> {
               labelText: 'Title', labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1, ),
               border: InputBorder.none,
             ) ,),
-            Wrap(
-              spacing: 8.0, // gap between adjacent chips
-              runSpacing: 4.0, // gap between lines
-              children: _textFields,
+            Expanded(
+              child: Wrap(
+                //spacing: 8.0, // gap between adjacent chips
+                //runSpacing: 4.0, // gap between lines
+                children: _textFields,
+              ),
             ),
             
             TextField(
@@ -64,8 +64,10 @@ class _CreatePostState extends State<CreatePost> {
                 labelText: "body text (optional)", 
               ),        
             ),
-            Wrap(
-              children: poll,
+            Expanded(
+              child: Wrap(
+                children: poll,
+              ),
             ),
             
             Row(
@@ -159,52 +161,54 @@ class _CreatePostState extends State<CreatePost> {
 }
 
 Widget buildpoll(){
-  return Container(
-    decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(5)),
-    child: Column(
-      children: [
-        Row(children: [IconButton(onPressed: _removePoll, icon: Icon(Icons.cancel))],),
-        Column(
-          children: [
-            TextField(
-              controller: poll1,
-              decoration: const InputDecoration(labelText: "Poll 1"),
-            ),
-            TextField(
-              controller: poll2,
-              decoration: const InputDecoration(labelText: "Poll 2"),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: pollIndices.length,
-                itemBuilder: (context, index) {
-                  return buildPollRow(index);
-    
-                },
+  return Expanded(
+    child: Container(
+      decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(5)),
+      child: Column(
+        children: [
+          Row(children: [IconButton(onPressed: _removePoll, icon: Icon(Icons.cancel))],),
+          Column(
+            children: [
+              TextField(
+                controller: poll1,
+                decoration: const InputDecoration(labelText: "Poll 1"),
               ),
-            ),
-            Container(
-              decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(5)),
-              child: GestureDetector(
-                onTap: addPoll,
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  
-                   children: 
-                   [
-                    Icon(Icons.add),
-                    SizedBox(width: 5,),
-                    Text("Add Poll")
-                    ],
-                  
-                  ),
-              
+              TextField(
+                controller: poll2,
+                decoration: const InputDecoration(labelText: "Poll 2"),
               ),
-            ),
-          ],
-        )
-      ]
-    
+              Expanded(
+                child: ListView.builder(
+                  itemCount: pollIndices.length,
+                  itemBuilder: (context, index) {
+                    return buildPollRow(index);
+      
+                  },
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(border: Border.all(), color: Colors.white, borderRadius: BorderRadius.circular(5)),
+                child: GestureDetector(
+                  onTap: addPoll,
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    
+                     children: 
+                     [
+                      Icon(Icons.add),
+                      SizedBox(width: 5,),
+                      Text("Add Poll")
+                      ],
+                    
+                    ),
+                
+                ),
+              ),
+            ],
+          )
+        ]
+      
+      ),
     ),
   );
   
@@ -213,12 +217,10 @@ Widget buildpoll(){
 
  void _addPollBuild(){
     setState(() {
-      if(poll==null){
+      
         poll.add(buildpoll());
-      }
-      });
-    
-    
+      
+    }); 
   }
 
   void _removePoll(){
@@ -226,7 +228,7 @@ Widget buildpoll(){
       poll.removeLast();
     });
   }
-  
+
 Widget buildPollRow(int index) {
   return Row(
     children: [
