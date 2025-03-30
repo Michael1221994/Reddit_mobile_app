@@ -45,8 +45,10 @@ class _CreatepostState extends State<Createpost> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+            mainAxisSize: MainAxisSize.min, // Allows column to shrink and grow dynamically
             children: [
               TextField(controller: Title, decoration: InputDecoration(labelText: 'Title', floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1,)),),
+              SizedBox(height: 10),
               Flexible(
                 fit: FlexFit.loose,
                 child: Wrap(
@@ -55,6 +57,7 @@ class _CreatepostState extends State<Createpost> {
               ),
               TextField(
                 controller: TextController, decoration: InputDecoration(labelText: "body text (optional)", floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.05,)),), 
+              SizedBox(height: 10),
               Flexible(
                 fit: FlexFit.loose,
                 child: Wrap(
@@ -66,10 +69,10 @@ class _CreatepostState extends State<Createpost> {
               ),
               Row(
                 children: [
-                  IconButton(onPressed: addtextfield, icon: Icon(Icons.link, color: Colors.black,)),
-                  IconButton(onPressed: _pickImage, icon: Icon(Icons.photo, color: Colors.black,)),
+                  IconButton(onPressed: (poll.isEmpty && _image == null) ? addtextfield : null, icon: Icon(Icons.link, color: (poll.isEmpty &&  _image == null) ? Colors.black : Colors.grey,)),
+                  IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null) ?_pickImage: null, icon: Icon(Icons.photo, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
                     //IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_outline_outlined, color: Colors.black,)),
-                  IconButton(onPressed: _addPollBuild, icon: Icon(Icons.poll_outlined, color: Colors.black,)),
+                  IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null)?_addPollBuild : null, icon: Icon(Icons.poll_outlined, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
                 ]
               )
             ],
@@ -166,7 +169,7 @@ class _CreatepostState extends State<Createpost> {
               ),
               
           GestureDetector(
-            onTap: addPoll,
+            onTap: addPollRow,
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(),
@@ -200,34 +203,57 @@ Widget buildPollRow(int index) {
         ),
       ),
       IconButton(
-        icon: const Icon(Icons.cancel),
-        onPressed: () => removePoll(index),
+        icon:  Icon(Icons.cancel),
+        onPressed: () => removePolls(index),
       ),
     ],
   );
 }
 
-void addPoll() {
-  if (counter < 6) {
+//void addPoll() {
+  //if (counter < 6) {
+    //print("adding poll");
+    //setState(() {
+      //int newIndex = textControllers.length;
+      //textControllers[newIndex] = TextEditingController(); // Dynamically add a new controller to the map
+      //pollIndices.add(newIndex); // Use newIndex to track added polls correctly
+      //nextPollIndex++;
+      //newpoll.add(buildPollRow(newIndex));
+      //counter++;
+    //});
+  //}
+//}
+
+void removeasIsaid(){
+  print("Just got called");
+}
+void addPollRow() {
+  print("ADD Poll Pressed");
+  //if (counter < 6) { // assuming you want a max of 5 polls
     setState(() {
-      int newIndex = textControllers.length;
-      textControllers[newIndex] = TextEditingController(); // Dynamically add a new controller to the map
-      pollIndices.add(newIndex); // Use newIndex to track added polls correctly
-      nextPollIndex++;
+      int newIndex = pollIndices.length; // New index based on the current number of polls
+      if (!textControllers.containsKey(newIndex)) { // Check if controller already exists
+        textControllers[newIndex] = TextEditingController(); // Add new controller if not exists
+      }
+      pollIndices.add(newIndex); // Add new index to track
+      counter++; // Increment the counter
       newpoll.add(buildPollRow(newIndex));
-      counter++;
     });
-  }
+ // }
 }
 
-void removePoll(int index) {
+
+ void removePolls(int index) {
+  print("REMOVE POLL PRESSED");
   setState(() {
+    
     int keyToRemove = pollIndices[index];
     textControllers[keyToRemove]?.dispose(); // Dispose of the controller
     textControllers.remove(keyToRemove); // Remove controller from the map
     pollIndices.removeAt(index); // Adjust indices list accordingly
     counter--;
     newpoll.removeLast();
+    newpoll.remove(buildPollRow(index));
   });
 }
 }
