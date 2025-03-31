@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,8 @@ class Createpost extends StatefulWidget {
 }
 
 class _CreatepostState extends State<Createpost> {
+  Key pollSectionKey = UniqueKey();
+
   TextEditingController Title=TextEditingController();
   TextEditingController TextController=TextEditingController();
   TextEditingController poll1 = TextEditingController();
@@ -40,43 +43,47 @@ class _CreatepostState extends State<Createpost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back, color: Colors.black,)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Colors.black,)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-            mainAxisSize: MainAxisSize.min, // Allows column to shrink and grow dynamically
-            children: [
-              TextField(controller: Title, decoration: InputDecoration(labelText: 'Title', floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1,)),),
-              SizedBox(height: 10),
-              Flexible(
-                fit: FlexFit.loose,
-                child: Wrap(
-                  children:_textFields,
-                ),
-              ),
-              TextField(
-                controller: TextController, decoration: InputDecoration(labelText: "body text (optional)", floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.05,)),), 
-              SizedBox(height: 10),
-              Flexible(
-                fit: FlexFit.loose,
-                child: Wrap(
-                  children:poll,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min, // Allows column to shrink and grow dynamically
+              children: [
+                TextField(controller: Title, decoration: InputDecoration(labelText: 'Title', floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1,)),),
+                SizedBox(height: 10),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Wrap(
+                    children:_textFields,
                   ),
+                ),
+                TextField(
+                  controller: TextController, decoration: InputDecoration(labelText: "body text (optional)", floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.05,)),), 
+                SizedBox(height: 10),
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Wrap(
+                    children:poll,
+                    ),
+                ),
+                SizedBox(
+                  height: (poll.isEmpty ) ? 20: 350,
+                ),
+                Row(
+                  children: [
+                    IconButton(onPressed: (poll.isEmpty && _image == null) ? addtextfield : null, icon: Icon(Icons.link, color: (poll.isEmpty &&  _image == null) ? Colors.black : Colors.grey,)),
+                    IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null) ?_pickImage: null, icon: Icon(Icons.photo, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
+                      //IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_outline_outlined, color: Colors.black,)),
+                    IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null)?_addPollBuild : null, icon: Icon(Icons.poll_outlined, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
+                  ]
+                )
+              ],
               ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  IconButton(onPressed: (poll.isEmpty && _image == null) ? addtextfield : null, icon: Icon(Icons.link, color: (poll.isEmpty &&  _image == null) ? Colors.black : Colors.grey,)),
-                  IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null) ?_pickImage: null, icon: Icon(Icons.photo, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
-                    //IconButton(onPressed: (){}, icon: Icon(Icons.play_circle_outline_outlined, color: Colors.black,)),
-                  IconButton(onPressed: (poll.isEmpty && _textFields.isEmpty && _image == null)?_addPollBuild : null, icon: Icon(Icons.poll_outlined, color: (poll.isEmpty && _textFields.isEmpty && _image == null) ? Colors.black : Colors.grey,)),
-                ]
-              )
-            ],
-            ),
+        ),
       ),
       );
   }
@@ -133,60 +140,71 @@ class _CreatepostState extends State<Createpost> {
       }
     });
   } 
-
+void updatePollSection() {
+    pollSectionKey = UniqueKey();  // Change the key to force rebuild
+  }
   Widget buildpoll() {
   return Container(
+    
     decoration: BoxDecoration(border: Border.all(), color: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-    height: MediaQuery.of(context).size.height * 0.6, // Set a finite height
-    child: Padding(
-      padding: EdgeInsets.all( 8.0),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          IconButton(onPressed: _removePoll, icon: Icon(Icons.cancel_outlined)),
-          TextField(
-            controller: poll1,
-            decoration: const InputDecoration(labelText: "Poll 1"),
-          ),
-          TextField(
-            controller: poll2,
-            decoration: const InputDecoration(labelText: "Poll 2"),
-          ),
-          //...pollIndices.map((index) => buildPollRow(index)).toList(),
-          //ListView.builder(
-            //shrinkWrap: true, // Shrink-wrap the ListView
-            //physics: NeverScrollableScrollPhysics(), // Disable scrolling for the inner ListView
-            //itemCount: pollIndices.length,
-            //itemBuilder: (context, index) {
-            //  return buildPollRow(index);
-          //},
-        //),
-
-        Column(
-                children: [Wrap(
-                  children:newpoll,
-                  ),]
-              ),
-              
-          GestureDetector(
-            onTap: addPollRow,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.add),
-                  SizedBox(width: 5),
-                  Text("Add Poll"),
-                ],
+    //height: MediaQuery.of(context).size.height * 0.5, // Set a finite height
+    width: MediaQuery.of(context).size.width*0.8,
+    child: SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all( 8.0),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            IconButton(onPressed: _removePoll, icon: Icon(Icons.cancel_outlined)),
+            TextField(
+              controller: poll1,
+              decoration: const InputDecoration(labelText: "Poll 1"),
+            ),
+            TextField(
+              controller: poll2,
+              decoration: const InputDecoration(labelText: "Poll 2"),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            //...pollIndices.map((index) => buildPollRow(index)).toList(),
+            //ListView.builder(
+              //shrinkWrap: true, // Shrink-wrap the ListView
+              //physics: NeverScrollableScrollPhysics(), // Disable scrolling for the inner ListView
+              //itemCount: pollIndices.length,
+              //itemBuilder: (context, index) {
+              //  return buildPollRow(index);
+            //},
+          //),
+      
+          Column(
+                  children: [Wrap(
+                    children:newpoll,
+                    ),]
+                ),
+            SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: addPollRow,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.add),
+                    SizedBox(width: 5),
+                    Text("Add Poll"),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -194,6 +212,7 @@ class _CreatepostState extends State<Createpost> {
 
 Widget buildPollRow(int index) {
   return Row(
+    key: ValueKey(index),
     children: [
       Flexible(
         fit: FlexFit.loose,
@@ -236,24 +255,51 @@ void addPollRow() {
         textControllers[newIndex] = TextEditingController(); // Add new controller if not exists
       }
       pollIndices.add(newIndex); // Add new index to track
-      counter++; // Increment the counter
       newpoll.add(buildPollRow(newIndex));
+      counter++; // Increment the counter
+      updatePollSection();
     });
  // }
 }
 
 
- void removePolls(int index) {
-  print("REMOVE POLL PRESSED");
-  setState(() {
+void removePolls(int index) {
+  if (index < 0 || index >= pollIndices.length) {
+    // If the index is out of range, return early to prevent errors
+    print("Index out of range");
     
+  }
+
+  setState(() {
     int keyToRemove = pollIndices[index];
-    textControllers[keyToRemove]?.dispose(); // Dispose of the controller
-    textControllers.remove(keyToRemove); // Remove controller from the map
-    pollIndices.removeAt(index); // Adjust indices list accordingly
+    if (textControllers.containsKey(keyToRemove)) {
+      textControllers[keyToRemove]!.dispose(); // Dispose the controller
+      textControllers.remove(keyToRemove); // Remove controller from the map
+    }
+
+    pollIndices.removeAt(index); // Remove index from pollIndices
+
+    // Rebuild the newpoll list by removing the widget associated with the removed controller
+    newpoll = List<Widget>.from(newpoll.where((element) => element.key != ValueKey(keyToRemove)));
+
     counter--;
-    newpoll.removeLast();
-    newpoll.remove(buildPollRow(index));
+    updatePollSection();
   });
 }
+
+
+ //void removePolls(int index) {
+  //print("REMOVE POLL PRESSED");
+  //setState(() {
+    
+    //int keyToRemove = pollIndices[index];
+    //textControllers[keyToRemove]?.dispose(); // Dispose of the controller
+    //textControllers.remove(keyToRemove); // Remove controller from the map
+    //pollIndices.removeAt(index); // Adjust indices list accordingly
+    //counter--;
+    //newpoll.removeLast();
+    //newpoll.remove(buildPollRow(index));
+  //});
+//}
+
 }

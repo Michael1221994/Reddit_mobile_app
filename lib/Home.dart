@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_attempt2/createPost.dart';
 import 'package:reddit_attempt2/create_post.dart';
 import 'package:reddit_attempt2/login.dart';
 import 'container.dart';
@@ -60,6 +61,6 @@ class _homeState extends State<home> {
 
   }
   void createpost (){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePost()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Createpost()));
   }
 }
