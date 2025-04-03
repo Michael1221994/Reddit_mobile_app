@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reddit_attempt2/signup.dart';
 import 'firebase_auth_implementation/firebase_auth.dart';
-import 'Home.dart';
+import 'Guide.dart';
 class Login extends StatefulWidget {
    Login({super.key});
 
@@ -161,7 +161,7 @@ class _LoginState extends State<Login> {
     User? user = await FirebaseAuthImplementation().Login(email, password);
     if(user != null){
       print("Successfully logged in");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Guide()));
       //Navigator.pushNamed(context, "/home");
       }
     else {
@@ -173,7 +173,7 @@ class _LoginState extends State<Login> {
     User? user= await FirebaseAuthImplementation().LoginWithGoogle();
     if(user != null){
       print("Successfully logged in with google");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Guide()));
       //Navigator.pushNamed(context, "/home");
       }
     else {

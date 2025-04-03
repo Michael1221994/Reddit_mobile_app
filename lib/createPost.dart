@@ -225,6 +225,7 @@ Widget buildPollRow(int index) {
         icon:  Icon(Icons.cancel),
         onPressed: () => removePolls(index),
       ),
+      
     ],
   );
 }
@@ -255,8 +256,21 @@ void addPollRow() {
         textControllers[newIndex] = TextEditingController(); // Add new controller if not exists
       }
       pollIndices.add(newIndex); // Add new index to track
-      newpoll.add(buildPollRow(newIndex));
-      counter++; // Increment the counter
+     newpoll = [
+      for (int i = 0; i < newpoll.length; i++)
+        buildPollRow(i), // Rebuild all existing rows
+      buildPollRow(newIndex) // Add new row
+    ];
+    
+    // 2. Force parent rebuild
+    poll = [
+      Container(
+        key: UniqueKey(), // New key forces rebuild
+        child: buildpoll(), // Recreate entire poll widget
+      )
+    ];
+    
+    counter++;
       updatePollSection();
     });
  // }
@@ -264,6 +278,7 @@ void addPollRow() {
 
 
 void removePolls(int index) {
+
   if (index < 0 || index >= pollIndices.length) {
     // If the index is out of range, return early to prevent errors
     print("Index out of range");
@@ -271,20 +286,34 @@ void removePolls(int index) {
   }
 
   setState(() {
-    int keyToRemove = pollIndices[index];
+    if(counter<6){
+
+    
+    final keyToRemove = pollIndices[index];
     if (textControllers.containsKey(keyToRemove)) {
       textControllers[keyToRemove]!.dispose(); // Dispose the controller
       textControllers.remove(keyToRemove); // Remove controller from the map
     }
+    newpoll = [
+          for (int i = 0; i < pollIndices.length; i++)
+            buildPollRow(i) // Rebuild all remaining rows
+        ];
 
-    pollIndices.removeAt(index); // Remove index from pollIndices
-
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          poll = [buildpoll()]; // Complete rebuild
+        });
+      }
+    });
+    
     // Rebuild the newpoll list by removing the widget associated with the removed controller
     newpoll = List<Widget>.from(newpoll.where((element) => element.key != ValueKey(keyToRemove)));
 
     counter--;
-    updatePollSection();
-  });
+    //updatePollSection();
+  }});
+
 }
 
 

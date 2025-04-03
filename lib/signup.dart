@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_auth_implementation/firebase_auth.dart';
-import 'package:reddit_attempt2/Home.dart';
+import 'package:reddit_attempt2/Guide.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {
@@ -158,7 +158,7 @@ class _SignupState extends State<Signup> {
       print("Successfully signed up");
       Navigator.push
       (context, 
-      MaterialPageRoute(builder: (context) => home())); 
+      MaterialPageRoute(builder: (context) => Guide())); 
     }
     else {
       print("Failed to sign up");
@@ -169,7 +169,7 @@ class _SignupState extends State<Signup> {
     User? user= await FirebaseAuthImplementation().SignupWithGoogle();
     if(user != null){
       print("Successfully logged in with google");
-      Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Guide()));
     }
     else {
       print("Unable to log in with google");
