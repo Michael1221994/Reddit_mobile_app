@@ -2,14 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/dropdown_widgets.dart';
 
 class bottomsheet extends StatefulWidget {
-  const bottomsheet({super.key});
+  final Function(String) onTypeSelected;
+  final String initialSelection;
+  const bottomsheet({
+    super.key,
+    required this.onTypeSelected,
+    required this.initialSelection,
+    
+    });
 
   @override
   State<bottomsheet> createState() => _bottomsheetState();
 }
 
 class _bottomsheetState extends State<bottomsheet> {
-    int isSelected=0;
+    late String isSelected;
+
+  @override
+  void initState(){
+      super.initState();
+      isSelected= widget.initialSelection;
+  }
 
   @override
 
@@ -31,20 +44,24 @@ class _bottomsheetState extends State<bottomsheet> {
           children: [
 
             GestureDetector(child: Items[0], onTap: () => setState(() {
-              isSelected=0;
-              print(isSelected);
+              isSelected="Public";
+              widget.onTypeSelected("Public");
+              print(0);
               Navigator.pop(context);
             }),),
             const SizedBox(height: 10,),
             GestureDetector(child: Items[1], onTap: () => setState(() {
-              isSelected=1;
-              print(isSelected);
+              isSelected="Restricted";
+              widget.onTypeSelected("Restricted");
+              print(1);
               Navigator.pop(context);
             }),),
             const SizedBox(height: 10,),
             GestureDetector(child: Items[2], onTap: () => setState(() {
-              isSelected=2;
-              print(isSelected);
+              isSelected= "Private";
+              widget.onTypeSelected("Private");
+
+              print(2);
               Navigator.pop(context);
             }),)
           ],

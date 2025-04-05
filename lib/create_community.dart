@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/bottomsheet.dart';
 import 'Custom_Widgets/dropdown_widgets.dart';
@@ -12,39 +13,37 @@ class CreateCommunity extends StatefulWidget {
 }
 
 
- final List<Map<String, dynamic>> dropdownItems = [
-    {
-      "title": "Public",
-      "description": "Anyone can view, post, and comment to the community",
-      "icon": Icons.public,
-      "value": "Public"
-    },
-    {
-      "title": "Restricted",
-      "description": "Anyone can view, but only approved users can post",
-      "icon": Icons.check_circle_outline,
-      "value": "Restricted"
-    },
-  
-    {
-      "title": "Private",
-      "description": "Only approved users can view and submit ",
-      "icon": Icons.lock_outline,
-      "value": "Private"
-    },
-  ];
+ 
 
 class _CreateCommunityState extends State<CreateCommunity> {
+  String selectedType= "Public";
+  bool adult = false;
+  TextEditingController Community_name = TextEditingController();
+  String  selectedvalue= "Public" ;
+
+  void adultselected(int index){
+    setState(() {
+      adult=!adult;
+    });
+  }
   void _openBottomSheet() {
     showModalBottomSheet(
       context: context, 
-      builder: (ctx) => bottomsheet());
+      builder: (ctx) => bottomsheet(
+        initialSelection: selectedType,
+        onTypeSelected: (newType){
+          setState(() {
+            selectedType=newType;
+          });
+          print(selectedType);
+        },
+
+      ));
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController Community_name = TextEditingController();
-    String  selectedvalue= "Public" ;
+    
     return Scaffold(
       appBar: AppBar(title: Text("Create a Community"),
       leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context),),),
@@ -56,7 +55,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
             Container(
               child: Column(
                 children: [
-                Text("Create a Community"),
+                const Text("Create a Community"),
                 Container(
                   height: MediaQuery.of(context).size.height*0.1,
                   
@@ -68,22 +67,59 @@ class _CreateCommunityState extends State<CreateCommunity> {
 
                 Container(
                   width: MediaQuery.of(context).size.width*0.9,
-                  //decoration: BoxDecoration(border: Border.all(color: Colors.black), borderRadius: BorderRadius.circular(14), color: Colors.white),
                   child: GestureDetector(
                     onTap: _openBottomSheet,
-                    //foregroundColor: Colors.black,
                     
                     child: Row(
                       children: [
-                        Text(selectedvalue),
+                        Text(selectedType),
                         SizedBox(
                           width: MediaQuery.of(context).size.width*0.03,
                         ),
-                        Icon(Icons.arrow_drop_down)
+                        const Icon(Icons.arrow_drop_down)
                       ],
                     ),
                     ),
                 ),
+                 SizedBox(
+                  height:MediaQuery.of(context).size.height*0.04,
+                ),
+                Row(
+                  children: [
+                    Text("18+ Community"),
+                    SizedBox(width: MediaQuery.of(context).size.width*0.5,),
+                    Transform.scale(
+                      scale: 1.5,
+                      child: Switch(
+                        value: adult,
+                        onChanged: (value) {
+                          setState(() {
+                            adult = value;
+                            print(adult);
+                          });
+                        },
+                        activeColor: Colors.blue, // Color when ON
+                        activeTrackColor: Colors.blue[200], // Track color when ON
+                      ),
+                    )
+                   /* ToggleButtons(children: [Icon(Icons.toggle)], isSelected: [adult],
+                    onPressed: (int index) => {setState(() {
+                                adult=!adult;
+                              })},
+                    )*/
+                  ],
+                ),
+                 SizedBox(
+                  height:MediaQuery.of(context).size.height*0.05,
+                ),
+                ElevatedButton(
+                  onPressed: Community_name.text.isEmpty ?null : (){} , 
+                  child: Text("Create Community"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Community_name.text.isEmpty ? Colors.grey: Colors.deepPurple ,
+                    foregroundColor: Colors.white
+                  ),
+                  )
                 /*DropdownButton(
                   value: selectedvalue,
                   hint: Text(selectedvalue),
