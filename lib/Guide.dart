@@ -4,6 +4,7 @@ import 'package:reddit_attempt2/Home.dart';
 import 'package:reddit_attempt2/Inbox.dart';
 import 'package:reddit_attempt2/communities.dart';
 import 'package:reddit_attempt2/createPost.dart';
+import 'package:reddit_attempt2/create_community.dart';
 import 'package:reddit_attempt2/create_post.dart';
 import 'package:reddit_attempt2/login.dart';
 import 'container.dart';
@@ -40,7 +41,7 @@ class _homeState extends State<Guide> {
           children:  [
             DrawerHeader(child: Text("Your Communities")),
             ListTile(
-              title: Text("+ Create a community"),
+              title: GestureDetector(child: const Text("+ Create a community"), onTap:() {Navigator.push(context , MaterialPageRoute(builder: (context)=> CreateCommunity()));}),
             ),
             ListTile(
               title: GestureDetector(
