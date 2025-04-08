@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:reddit_attempt2/Chat.dart';
-import 'package:reddit_attempt2/Home.dart';
-import 'package:reddit_attempt2/Inbox.dart';
-import 'package:reddit_attempt2/communities.dart';
-import 'package:reddit_attempt2/createPost.dart';
-import 'package:reddit_attempt2/create_community.dart';
-import 'package:reddit_attempt2/create_post.dart';
-import 'package:reddit_attempt2/login.dart';
-import 'container.dart';
+import 'package:reddit_attempt2/Pages/Chat.dart';
+import 'package:reddit_attempt2/Pages/Home.dart';
+import 'package:reddit_attempt2/Pages/Inbox.dart';
+import 'package:reddit_attempt2/Pages/communities.dart';
+import 'package:reddit_attempt2/Pages/createPost.dart';
+import 'package:reddit_attempt2/Pages/create_community.dart';
+import 'package:reddit_attempt2/Pages/create_post.dart';
+import 'package:reddit_attempt2/Pages/login.dart';
+import '../container.dart';
 class Guide extends StatefulWidget {
   const Guide ({super.key});
 

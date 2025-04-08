@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/createpostbloc/createpost_bloc.dart';
 import 'package:reddit_attempt2/createpostbloc/createpost_event.dart';
-import 'createpostbloc/createpost_state.dart';
+import '../createpostbloc/createpost_state.dart';
 
 class CreatePostPage extends StatelessWidget {
   final _titleController = TextEditingController();

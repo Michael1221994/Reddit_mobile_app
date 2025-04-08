@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:reddit_attempt2/signup.dart';
-import 'package:reddit_attempt2/wrapper.dart';
+import 'package:reddit_attempt2/Pages/signup.dart';
+import 'package:reddit_attempt2/Pages/wrapper.dart';
 
 class splashscreen extends StatefulWidget {
   const splashscreen({super.key});

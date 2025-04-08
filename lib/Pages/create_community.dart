@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/bottomsheet.dart';
-import 'Custom_Widgets/dropdown_widgets.dart';
+import '../Custom_Widgets/dropdown_widgets.dart';
 
 class CreateCommunity extends StatefulWidget {
   const CreateCommunity({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_auth_implementation/firebase_auth.dart';
-import 'package:reddit_attempt2/Guide.dart';
+import '../firebase_auth_implementation/firebase_auth.dart';
+import 'package:reddit_attempt2/Pages/Guide.dart';
 import 'login.dart';
 
 class Signup extends StatefulWidget {

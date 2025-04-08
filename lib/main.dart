@@ -1,15 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit_attempt2/container.dart';
-import 'package:reddit_attempt2/createPost.dart';
-import 'package:reddit_attempt2/create_post.dart';
 import 'package:reddit_attempt2/firebase_options.dart';
-import 'package:reddit_attempt2/login.dart';
-import 'package:reddit_attempt2/splash_screen.dart';
-import 'signup.dart';
-import 'home.dart';
-import 'poll.dart';
-import 'poll1.dart';
+import 'package:reddit_attempt2/Pages/splash_screen.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
