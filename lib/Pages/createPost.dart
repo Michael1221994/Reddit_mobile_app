@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:reddit_attempt2/container.dart';
 
 class Createpost extends StatefulWidget {
   const Createpost({super.key});
@@ -286,7 +285,7 @@ void removePolls(int index) {
   }
 
   setState(() {
-    if(counter<6){
+    
 
     
     final keyToRemove = pollIndices[index];
@@ -312,7 +311,7 @@ void removePolls(int index) {
 
     counter--;
     //updatePollSection();
-  }});
+  });
 
 }
 

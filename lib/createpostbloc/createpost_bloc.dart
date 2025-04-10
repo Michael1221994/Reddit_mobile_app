@@ -2,8 +2,7 @@ import 'createpost_event.dart';
 import 'createpost_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc() : super(const PostState()) {

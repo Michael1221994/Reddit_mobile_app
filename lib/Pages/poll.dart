@@ -1,5 +1,3 @@
-import 'dart:ffi';
-import'create_post.dart';
 import 'package:flutter/material.dart';
 
 class Poll1 extends StatefulWidget {

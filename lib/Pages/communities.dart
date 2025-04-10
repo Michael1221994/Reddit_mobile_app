@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reddit_attempt2/Pages/login.dart';
 
 class Communities extends StatefulWidget {
   const Communities({super.key});

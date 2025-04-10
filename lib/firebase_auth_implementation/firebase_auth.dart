@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthImplementation {
 
   FirebaseAuth _auth=FirebaseAuth.instance;
 
+
+  User? getCurrentUser () {
+    return _auth.currentUser;
+  }
   Future<User?> Signup(String email, String password)async{
     try {
       UserCredential Credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);

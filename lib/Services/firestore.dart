@@ -1,16 +1,20 @@
 import 'dart:core';
-import 'dart:js_interop';
-import 'package:reddit_attempt2/Extension_Methods/extension_methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+
 //import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class FirestoreService {
+
+    // get instances of firestore
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
   //Create the different collections on Firestore
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+   final CollectionReference communityCollection =
+      FirebaseFirestore.instance.collection('community');
   final CollectionReference postCollection =
       FirebaseFirestore.instance.collection('posts');
   final CollectionReference commentCollection =
@@ -33,7 +37,7 @@ class FirestoreService {
   DateTime oneyearago= DateTime.now().subtract(Duration(days: 365));
 
   //Create the different documents on Firestore
-  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String title, String? Text, DateTime posted_when, String? sub_id, String? user_id, int number_of_comments, int number_of_upvotes, int number_of_downvotes, List<String> flaires, String post_id, String? image_name, String? video_name, String link) async {  // not sure about image name, video name, post_id, link
+  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String> flaires, String post_id, String? image_name, String? video_name, String link) async {  // not sure about image name, video name, post_id, link
     return postCollection.add(
       {
       'title': title,
@@ -42,9 +46,9 @@ class FirestoreService {
       'posted_when': posted_when,
       'sub_id': sub_id,
       'user_id': user_id,
-      'number_of_comments': number_of_comments,
-      'number_of_upvotes': number_of_upvotes,
-      'number_of_downvotes': number_of_downvotes,
+      'number_of_comments': 0,
+      'number_of_upvotes': 0,
+      'number_of_downvotes': 0,
       'flaires': flaires,
       'post_id': post_id,
       'image_name': image_name,
@@ -67,6 +71,18 @@ class FirestoreService {
       }
     
   );
+}
+
+Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String user_id, bool adult  ) async {
+  return communityCollection.add(
+    {
+    'community_name': community_name,
+    'community_description': community_description,
+    'user_id': user_id,
+    'adult': adult
+    }
+  );
+  
 }
 
 Future<Future<DocumentReference<Object?>>> createComment(String post_id, String user_id, String comment, String sub_Id, String reply_to, DateTime commented_when, int Downvote_count, int upvote_count) async {
@@ -134,6 +150,7 @@ Future<Future<DocumentReference<Object?>>> createsaves(String user_id, String po
     }
   );
 }
+
 
 Future<Future<DocumentReference<Object?>>> createupvotedownvote(String user_id, String? post_id, String? comment_id, bool rating) async {
 
