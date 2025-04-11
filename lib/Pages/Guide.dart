@@ -8,6 +8,7 @@ import 'package:reddit_attempt2/Pages/communities.dart';
 import 'package:reddit_attempt2/Pages/createPost.dart';
 import 'package:reddit_attempt2/Pages/create_community.dart';
 import 'package:reddit_attempt2/Pages/login.dart';
+import 'package:reddit_attempt2/Pages/search_reddit_page.dart';
 class Guide extends StatefulWidget {
   const Guide ({super.key});
 
@@ -36,7 +37,7 @@ class _homeState extends State<Guide> {
       appBar: AppBar(
         title:  Text(headtitle, style: TextStyle(color: Color.fromARGB(255, 226, 73, 2)),),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon (Icons.search)),
+          IconButton(onPressed: push_Search_Reddit, icon: Icon (Icons.search)),
           IconButton(onPressed: (){}, icon: Icon (Icons.person)),
 
         ],
@@ -73,12 +74,12 @@ class _homeState extends State<Guide> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: Ontab,
-        selectedItemColor: Color.fromARGB(255, 226, 73, 2),
+        selectedItemColor: const Color.fromARGB(255, 226, 73, 2),
         unselectedItemColor: Colors.black,
         items:  [
           const BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
           const BottomNavigationBarItem( icon: Icon(Icons.search), label:"communities"),
-          BottomNavigationBarItem(icon: IconButton(onPressed:() => createpost (), icon: Icon(Icons.add)), label: "Create"),
+          BottomNavigationBarItem(icon: IconButton(onPressed:() => createpost (), icon: const Icon(Icons.add)), label: "Create"),
           const BottomNavigationBarItem(icon: Icon(Icons.message_outlined), label: "Chat"),
           const BottomNavigationBarItem(icon: Icon(Icons.notifications), label: "Inbox")
         ],
@@ -86,16 +87,21 @@ class _homeState extends State<Guide> {
     );
 
   }
+
+  void push_Search_Reddit(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const searchReddit()));
+
+  }
   void createpost (){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Createpost()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const Createpost()));
   }
 
   void communitiespush(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Communities(),));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const Communities(),));
   }
 
    void homepush(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Home(),));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const Home(),));
   }
 
   void Ontab (int index) {

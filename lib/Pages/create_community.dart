@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/bottomsheet.dart';
+import 'package:reddit_attempt2/Pages/createPost.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:reddit_attempt2/firebase_auth_implementation/firebase_auth.dart';
 
@@ -19,8 +20,9 @@ final TextEditingController community_name = TextEditingController();
   final FirebaseAuthImplementation auth=FirebaseAuthImplementation();
   final FirestoreService firestoreservice= FirestoreService();
 
-  void createCommunity () async {
+  void createCommunity (context) async {
     await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID, adult);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Createpost()));
   }
 
 
@@ -125,7 +127,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                   height:MediaQuery.of(context).size.height*0.05,
                 ),
                 ElevatedButton(
-                  onPressed: widget.createCommunity, 
+                  onPressed: () => widget.createCommunity(context), 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: widget.community_name.text.isEmpty ? Colors.grey: Colors.deepPurple ,
                     foregroundColor: Colors.white

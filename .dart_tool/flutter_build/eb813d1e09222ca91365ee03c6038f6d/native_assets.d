@@ -1,0 +1,1 @@
+ C:\\Users\\micha\\OneDrive\\Documents\\Projects\\Flutter\\reddit_attempt2\\.dart_tool\\flutter_build\\eb813d1e09222ca91365ee03c6038f6d\\native_assets.yaml: 

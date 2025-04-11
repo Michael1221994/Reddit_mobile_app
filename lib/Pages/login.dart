@@ -63,17 +63,17 @@ class _LoginState extends State<Login> {
                 child : const Text("Continue with Apple", style: TextStyle(color: Colors.blue)),
           
               ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Divider(
+            const Divider(
               color: Colors.black,
               thickness: 0.7,
               indent: 10.0,
               endIndent: 10.0,
             ),
             
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
           
@@ -91,7 +91,7 @@ class _LoginState extends State<Login> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 child: TextField(
                   controller: emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email', labelStyle: TextStyle(fontSize: 13.0),
                     border: InputBorder.none,
                 
@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                   
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
           
               Container(
                 padding: const EdgeInsets.all(5.0),
