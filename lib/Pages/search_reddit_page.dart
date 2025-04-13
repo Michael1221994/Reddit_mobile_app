@@ -15,14 +15,18 @@ class _searchRedditState extends State<searchReddit> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => Navigator.pop(context),),
-         
+         actions: [
+             SearchTextfield(),
+         ],
       
       ),
       //body: ListView.builder(itemBuilder: ),
-        body: const Padding(
-        padding: EdgeInsets.all(12.0),
-        child: SearchTextfield(),
-    )
+        body: SingleChildScrollView(
+          child:  Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Column()// where all the things they search for show up 
+              ),
+        )
     );
   }
 }

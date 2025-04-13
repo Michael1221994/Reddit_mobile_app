@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:reddit_attempt2/Pages/Chat.dart';
+import 'package:reddit_attempt2/Pages/Chat_List_Page.dart';
 import 'package:reddit_attempt2/Pages/Home.dart';
 import 'package:reddit_attempt2/Pages/Inbox.dart';
 import 'package:reddit_attempt2/Pages/communities.dart';
@@ -29,7 +29,7 @@ class _homeState extends State<Guide> {
       const Home(),
       const Communities(),
       const SizedBox(),
-      const Chat(recieverID: '',),
+       Chat(recieverID: '',),
       const Inbox(),
 
     ];
