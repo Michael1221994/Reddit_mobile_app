@@ -7,6 +7,7 @@ import 'package:reddit_attempt2/Pages/Inbox.dart';
 import 'package:reddit_attempt2/Pages/communities.dart';
 import 'package:reddit_attempt2/Pages/createPost.dart';
 import 'package:reddit_attempt2/Pages/create_community.dart';
+import 'package:reddit_attempt2/Pages/create_post.dart';
 import 'package:reddit_attempt2/Pages/login.dart';
 import 'package:reddit_attempt2/Pages/search_reddit_page.dart';
 class Guide extends StatefulWidget {
@@ -93,7 +94,7 @@ class _homeState extends State<Guide> {
 
   }
   void createpost (){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const Createpost()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const CreatepostV1()));
   }
 
   void communitiespush(){

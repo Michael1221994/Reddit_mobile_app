@@ -4,14 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
 
-class Createpost extends StatefulWidget {
-  const Createpost({super.key});
+class CreatepostV1 extends StatefulWidget {
+  const CreatepostV1({super.key});
 
   @override
-  State<Createpost> createState() => _CreatepostState();
+  State<CreatepostV1> createState() => _CreatepostV1State();
 }
 
-class _CreatepostState extends State<Createpost> {
+class _CreatepostV1State extends State<CreatepostV1> {
   Key pollSectionKey = UniqueKey();
 
   TextEditingController Title=TextEditingController();
@@ -33,7 +33,6 @@ class _CreatepostState extends State<Createpost> {
   TextField? linktextfield;
   List<Widget> _textFields = [];
   List<Widget> poll= [];
-  List<Widget> newpoll= [];
 
   int counter = 2; // Already have 2 polls
   int nextPollIndex = 0;
@@ -123,7 +122,7 @@ class _CreatepostState extends State<Createpost> {
   void _addPollBuild(){
     setState(() {
       if(!built&&poll.isEmpty){
-         poll.add(BuildPoll(poll1: poll1, poll2: poll2, newpoll: newpoll, removePoll: removePoll, addPollRow: addPollRow,));
+         poll.add(BuildPoll(poll1: poll1, poll2: poll2, removePoll: removePoll,));
          built=true;
       }
       
