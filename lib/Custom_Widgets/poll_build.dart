@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_attempt2/Custom_Widgets/bottom_sheet_for_polldays.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_row.dart';
 
 class BuildPoll extends StatefulWidget {
@@ -24,12 +25,31 @@ class BuildPoll extends StatefulWidget {
 
   List<Widget> newpoll= [];
 
+  
 
   @override
   State<BuildPoll> createState() => _BuildPollState();
 }
 
 class _BuildPollState extends State<BuildPoll> {
+
+  String selected="2";
+
+   void _openBottomSheet() {
+      showModalBottomSheet(
+        context: context, 
+        builder: (ctx) => number_of_days(
+          initialSelection: selected,
+          /*onTypeSelected: (newType){
+            setState(() {
+              widget.selectedType=newType;
+            });
+            print(widget.selectedType);
+          },*/
+
+      ));
+  }
+
   @override
   Widget build(BuildContext context) {
   return Container(
@@ -44,9 +64,23 @@ class _BuildPollState extends State<BuildPoll> {
           
           children: [
 
-            Padding(
-              padding: const EdgeInsets.only(right: 250.0,),
-              child: IconButton(onPressed: widget.removePoll, icon: const Icon(Icons.cancel_outlined)),
+            Row(
+              children: [
+                GestureDetector(
+                    onTap: _openBottomSheet,
+                    
+                    child: Row(
+                      children: [
+                        Text("$selected days"),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width*0.03,
+                        ),
+                        const Icon(Icons.arrow_drop_down)
+                      ],
+                    ),
+                    ),
+                IconButton(onPressed: widget.removePoll, icon: const Icon(Icons.cancel_outlined)),
+              ],
             ),
             TextField(
               controller: widget.poll1,
