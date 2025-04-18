@@ -40,12 +40,12 @@ class _BuildPollState extends State<BuildPoll> {
         context: context, 
         builder: (ctx) => number_of_days(
           initialSelection: selected,
-          /*onTypeSelected: (newType){
+          onTypeSelected: (newType){
             setState(() {
-              widget.selectedType=newType;
+              selected=newType!;
             });
-            print(widget.selectedType);
-          },*/
+            print(selected);
+          },
 
       ));
   }
@@ -58,13 +58,14 @@ class _BuildPollState extends State<BuildPoll> {
     width: MediaQuery.of(context).size.width*0.8,
     child: SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
         child: ListView(
           shrinkWrap: true,
           
           children: [
 
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                     onTap: _openBottomSheet,

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/days_limit.dart';
 
 class number_of_days extends StatefulWidget {
+  final Function(String?) onTypeSelected;
   late String? initialSelection;
    number_of_days({
     super.key,
-    required this.initialSelection
+    required this.initialSelection,
+    required this.onTypeSelected
     });
 
   @override
@@ -25,11 +27,13 @@ class _number_of_daysState extends State<number_of_days> {
             value: option, 
             groupValue: widget.initialSelection, 
             onChanged: (val){
+              widget.onTypeSelected(val);
               setState(() {
                 widget.initialSelection=val;
               });
             });
-        }).toList()
+        }).toList(),
+        
       ),
 
     );
