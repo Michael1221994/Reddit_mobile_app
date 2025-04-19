@@ -85,11 +85,13 @@ class _BuildPollState extends State<BuildPoll> {
             ),
             TextField(
               controller: widget.poll1,
-              decoration: const InputDecoration(labelText: "Poll 1"),
+
+              decoration: const InputDecoration(labelText: "Poll 1",),
             ),
             TextField(
               controller: widget.poll2,
-              decoration: const InputDecoration(labelText: "Poll 2"),
+              
+              decoration: const InputDecoration(labelText: "Poll 2",),
             ),
             const SizedBox(
               height: 10,
@@ -108,8 +110,8 @@ class _BuildPollState extends State<BuildPoll> {
               onTap: addPollRow,
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: Colors.transparent,
+                  //border: Border.all(),
+                  color: Colors.grey,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: const Row(
