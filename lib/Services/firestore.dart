@@ -36,8 +36,8 @@ class FirestoreService {
   DateTime onemonthago= DateTime.now().subtract(Duration(days: 30));
   DateTime oneyearago= DateTime.now().subtract(Duration(days: 365));
 
-  //Create the different documents on Firestore
-  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String> flaires, String post_id, String? image_name, String? video_name, String link) async {  // not sure about image name, video name, post_id, link
+  //Create the different documents on Firestore 
+  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String? title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String>? flaires,Map<String, int>? pollOptions,int? pollDurationDays, String? image_name, String? video_name, String link) async {  // not sure about image name, video name, post_id, link
     return postCollection.add(
       {
       'title': title,
@@ -50,7 +50,8 @@ class FirestoreService {
       'number_of_upvotes': 0,
       'number_of_downvotes': 0,
       'flaires': flaires,
-      'post_id': post_id,
+      'pollOptions': pollOptions,
+      'pollDurationDays': pollDurationDays,
       'image_name': image_name,
       'video_name': video_name,
       'link': link

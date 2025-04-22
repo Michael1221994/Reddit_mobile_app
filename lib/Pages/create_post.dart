@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
+import 'package:reddit_attempt2/container.dart';
 
 class CreatepostV1 extends StatefulWidget {
   const CreatepostV1({super.key});
@@ -15,9 +16,12 @@ class _CreatepostV1State extends State<CreatepostV1> {
   Key pollSectionKey = UniqueKey();
 
   TextEditingController Title=TextEditingController();
-  TextEditingController TextController=TextEditingController();
+  TextEditingController bodyTextController=TextEditingController();
   TextEditingController poll1 = TextEditingController();
   TextEditingController poll2 = TextEditingController();
+  bool containsPost=false;
+
+  
 
   Map<int, TextEditingController> textControllers = {
     0: TextEditingController(), // Controller for the first input field
@@ -25,6 +29,28 @@ class _CreatepostV1State extends State<CreatepostV1> {
     2: TextEditingController(), // Controller for the third input field
     3: TextEditingController(), // Controller for the fourth input field
   };
+
+    @override
+  void initState() {
+    super.initState();
+
+    // Add listeners to your controllers
+    bodyTextController.addListener(_updateButtonState);
+    poll1.addListener(_updateButtonState);
+    poll2.addListener(_updateButtonState);
+    LinkController.addListener(_updateButtonState);
+  }
+  bool isPostValid = false;
+
+void _updateButtonState() {
+  final newState = containPost();
+  if (newState != isPostValid) {
+    setState(() {
+      isPostValid = newState;
+    });
+  }
+}
+
   List<int> pollIndices = []; // Track added polls
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
@@ -42,7 +68,26 @@ class _CreatepostV1State extends State<CreatepostV1> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Colors.black,)),
+        leading:IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Colors.black,)),
+        actions: [
+            Row(
+            children: [
+            
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: isPostValid ? (){} : null,
+                child: Container(
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                     color: isPostValid? Colors.blue[900] : Colors.grey, borderRadius: BorderRadius.circular(20)),
+                  child: const Text("Next", style: TextStyle(color: Colors.white),),),
+              ),
+            )
+          ],
+        ),
+        ],
+
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,7 +98,7 @@ class _CreatepostV1State extends State<CreatepostV1> {
               mainAxisSize: MainAxisSize.min, // Allows column to shrink and grow dynamically
               children: [
                 TextField(controller: Title, decoration: InputDecoration(labelText: 'Title', floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.1,)),),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Flexible(
                   fit: FlexFit.loose,
                   child: Wrap(
@@ -61,8 +106,8 @@ class _CreatepostV1State extends State<CreatepostV1> {
                   ),
                 ),
                 TextField(
-                  controller: TextController, decoration: InputDecoration(labelText: "body text (optional)", floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.05,)),), 
-                SizedBox(height: 10),
+                  controller: bodyTextController, decoration: InputDecoration(labelText: "body text (optional)", floatingLabelBehavior: FloatingLabelBehavior.never, border: InputBorder.none, labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width*0.05,)),), 
+                const SizedBox(height: 10),
                 Flexible(
                   fit: FlexFit.loose,
                   child: Wrap(
@@ -87,6 +132,17 @@ class _CreatepostV1State extends State<CreatepostV1> {
       );
   }
 
+  bool containPost() {
+    if(bodyTextController.text.isNotEmpty || (poll2.text.isNotEmpty && poll1.text.isNotEmpty ) || poll1.text.isNotEmpty || _image != null || LinkController.text.isNotEmpty ){
+      
+        return true;
+     
+      }
+      return false;
+  }
+
+  
+
   void addtextfield(){
     setState(() {
       if(showfield==false){
@@ -94,7 +150,7 @@ class _CreatepostV1State extends State<CreatepostV1> {
         if(linktextfield==null){
           linktextfield=TextField(
           controller: LinkController,
-           decoration: InputDecoration(
+           decoration: const InputDecoration(
               labelText: "link", 
         )     
       );
@@ -117,6 +173,7 @@ class _CreatepostV1State extends State<CreatepostV1> {
     setState(() {
       _image = selectedImage;
     });
+      _updateButtonState();
   }
 
   void _addPollBuild(){
@@ -142,42 +199,5 @@ class _CreatepostV1State extends State<CreatepostV1> {
 void updatePollSection() {
     pollSectionKey = UniqueKey();  // Change the key to force rebuild
   }
-  
-
-
-
-//void addPoll() {
-  //if (counter < 6) {
-    //print("adding poll");
-    //setState(() {
-      //int newIndex = textControllers.length;
-      //textControllers[newIndex] = TextEditingController(); // Dynamically add a new controller to the map
-      //pollIndices.add(newIndex); // Use newIndex to track added polls correctly
-      //nextPollIndex++;
-      //newpoll.add(buildPollRow(newIndex));
-      //counter++;
-    //});
-  //}
-//}
-
-void removeasIsaid(){
-  print("Just got called");
-}
-
-
-
- //void removePolls(int index) {
-  //print("REMOVE POLL PRESSED");
-  //setState(() {
-    
-    //int keyToRemove = pollIndices[index];
-    //textControllers[keyToRemove]?.dispose(); // Dispose of the controller
-    //textControllers.remove(keyToRemove); // Remove controller from the map
-    //pollIndices.removeAt(index); // Adjust indices list accordingly
-    //counter--;
-    //newpoll.removeLast();
-    //newpoll.remove(buildPollRow(index));
-  //});
-//}
 
 }
