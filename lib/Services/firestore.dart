@@ -41,7 +41,7 @@ class FirestoreService {
     return postCollection.add(
       {
       'title': title,
-      'text': Text,
+      'text': Text, 
       'post_type': post_type,
       'posted_when': posted_when,
       'sub_id': sub_id,

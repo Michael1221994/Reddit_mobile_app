@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+
+
+class postTo extends StatelessWidget {
+  const postTo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController post_To = TextEditingController();
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.cancel_sharp, color: Colors.black,)),
+        title: const Text("Post to", style: TextStyle(color: Colors.black),)
+      ),
+
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.grey
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                
+                children: [
+                  const Icon(Icons.search),
+                  Expanded(
+                    child: TextField(
+                      controller: post_To,
+                      decoration: const InputDecoration(
+                        hintText: 'Search for a community',
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              ),
+          ),
+
+            SingleChildScrollView(
+
+            )
+        ],
+      ),
+    );
+  }
+}

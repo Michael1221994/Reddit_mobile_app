@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
-import 'package:reddit_attempt2/container.dart';
+import 'package:reddit_attempt2/Pages/postTo_Page.dart';
+import 'package:reddit_attempt2/Services/firestore.dart';
 
 class CreatepostV1 extends StatefulWidget {
   const CreatepostV1({super.key});
@@ -13,7 +13,9 @@ class CreatepostV1 extends StatefulWidget {
 }
 
 class _CreatepostV1State extends State<CreatepostV1> {
-  Key pollSectionKey = UniqueKey();
+  final FirebaseAuth auth= FirebaseAuth.instance;
+  final FirestoreService firestoreService= FirestoreService();
+
 
   TextEditingController Title=TextEditingController();
   TextEditingController bodyTextController=TextEditingController();
@@ -49,6 +51,28 @@ void _updateButtonState() {
       isPostValid = newState;
     });
   }
+
+  if(poll1.text.isNotEmpty && poll2.text.isNotEmpty){
+    setState(() {
+      post_type="poll";
+    });
+    }
+  if(_image!=null){
+    setState(() {
+      post_type="image";
+      });
+  }
+  if(LinkController.text.isNotEmpty){
+    setState(() {
+      post_type="link";
+      });
+  }
+}
+
+
+void create_post(){
+  var user = auth.currentUser;
+
 }
 
   List<int> pollIndices = []; // Track added polls
@@ -59,7 +83,7 @@ void _updateButtonState() {
   TextField? linktextfield;
   List<Widget> _textFields = [];
   List<Widget> poll= [];
-
+  late String post_type;
   int counter = 2; // Already have 2 polls
   int nextPollIndex = 0;
   bool built=false;
@@ -68,7 +92,7 @@ void _updateButtonState() {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Colors.black,)),
+        leading:IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back, color: Colors.black,)),
         actions: [
             Row(
             children: [
@@ -76,11 +100,11 @@ void _updateButtonState() {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: isPostValid ? (){} : null,
+                onTap: isPostValid ? choose_community : null,
                 child: Container(
                   padding: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
-                     color: isPostValid? Colors.blue[900] : Colors.grey, borderRadius: BorderRadius.circular(20)),
+                     color: isPostValid ? Colors.blue[900] : Colors.grey, borderRadius: BorderRadius.circular(20)),
                   child: const Text("Next", style: TextStyle(color: Colors.white),),),
               ),
             )
@@ -141,6 +165,8 @@ void _updateButtonState() {
       return false;
   }
 
+
+
   
 
   void addtextfield(){
@@ -196,8 +222,15 @@ void _updateButtonState() {
       }
     });
   } 
-void updatePollSection() {
-    pollSectionKey = UniqueKey();  // Change the key to force rebuild
+
+  /*void create_Post(){
+    var user = auth.currentUser;
+    firestoreService.createPost(post_type, Title.text, bodyTextController.text, DateTime.now(), user!.uid );
+  }*/
+
+  void choose_community() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const postTo()));
   }
+
 
 }
