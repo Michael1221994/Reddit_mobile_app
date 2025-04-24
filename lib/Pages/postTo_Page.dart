@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reddit_attempt2/Custom_Widgets/search_result.dart';
+import 'package:reddit_attempt2/Services/firestore.dart';
 
 
 class postTo extends StatelessWidget {
@@ -6,6 +8,7 @@ class postTo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirestoreService firestore= FirestoreService();
     TextEditingController post_To = TextEditingController();
 
     return Scaffold(
@@ -47,7 +50,9 @@ class postTo extends StatelessWidget {
           ),
 
             SingleChildScrollView(
-
+              child: ListView.builder(
+                itemBuilder: SearchResult();
+                ),
             )
         ],
       ),

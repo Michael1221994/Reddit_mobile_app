@@ -74,16 +74,24 @@ class FirestoreService {
   );
 }
 
-Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String user_id, bool adult  ) async {
+Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String user_id, bool adult, List<String> members  ) async {
   return communityCollection.add(
     {
     'community_name': community_name,
     'community_description': community_description,
     'user_id': user_id,
-    'adult': adult
+    'adult': adult,
+    'members': members
+
     }
   );
   
+}
+
+Future<DocumentSnapshot<Object?>> fetchcommunity() async {
+  var user= await _auth.currentUser!;
+  var communities= communityCollection.doc(user.uid).get();
+  return communities;
 }
 
 Future<Future<DocumentReference<Object?>>> createComment(String post_id, String user_id, String comment, String sub_Id, String reply_to, DateTime commented_when, int Downvote_count, int upvote_count) async {
@@ -137,6 +145,12 @@ Future<Future<DocumentReference<Object?>>> createjoinedsubreddits(String user_id
     }
   );
 }
+
+/*Future<Future<DocumentReference<Object?>>>  fetchjoinedsubreddits(String user_id) async{
+  var user= await _auth.currentUser!(user_id);
+  var joined_subreddits = await joinedsubreddits.doc(user_id).get();
+
+}*/
 
 Future<Future<DocumentReference<Object?>>> createsaves(String user_id, String post_id) async{
    //check if user and post exist

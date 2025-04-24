@@ -19,11 +19,14 @@ final TextEditingController community_name = TextEditingController();
   //chat and auth services
   final FirebaseAuthImplementation auth=FirebaseAuthImplementation();
   final FirestoreService firestoreservice= FirestoreService();
+  late List<String> members;
+
 
   void createCommunity (context) async {
-    await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID, adult);
+    await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID, adult, members);
     Navigator.push(context, MaterialPageRoute(builder: (context) => Createpost()));
   }
+
 
 
   @override
