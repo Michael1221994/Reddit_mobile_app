@@ -74,12 +74,12 @@ class FirestoreService {
   );
 }
 
-Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String user_id, bool adult, List<String> members  ) async {
+Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String owner_user_id, bool adult, List<String> members  ) async {
   return communityCollection.add(
     {
     'community_name': community_name,
     'community_description': community_description,
-    'user_id': user_id,
+    'owner_user_id': owner_user_id,
     'adult': adult,
     'members': members
 
@@ -88,10 +88,20 @@ Future<DocumentReference<Object?>> createCommunity(String community_name, String
   
 }
 
-Future<DocumentSnapshot<Object?>> fetchcommunity() async {
-  var user= await _auth.currentUser!;
-  var communities= communityCollection.doc(user.uid).get();
-  return communities;
+Future<List<Community>> fetchcommunity() async {
+  final user = _auth.currentUser!;
+  final querySnapshot = await communityCollection
+      .where('owner_user_id', isEqualTo: user.uid)
+      .get();
+
+  return querySnapshot.docs.map((doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Community(
+      name: data['community_name'],
+      description: data['community_description'],
+      adult: data['adult'] ?? false,
+    );
+  }).toList();
 }
 
 Future<Future<DocumentReference<Object?>>> createComment(String post_id, String user_id, String comment, String sub_Id, String reply_to, DateTime commented_when, int Downvote_count, int upvote_count) async {
@@ -419,4 +429,12 @@ Stream<QuerySnapshot> getSubreddits() {
 Stream<QuerySnapshot> getComments(String post_id) {
   return commentCollection.where('post_id', isEqualTo: post_id).snapshots();  
 }
+}
+
+class Community {
+  final String name;
+  final String description;
+  final bool adult;
+
+  Community({required this.name, required this.description, required this.adult});
 }

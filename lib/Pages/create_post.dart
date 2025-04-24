@@ -229,7 +229,7 @@ void create_post(){
   }*/
 
   void choose_community() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const postTo()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo()));
   }
 
 

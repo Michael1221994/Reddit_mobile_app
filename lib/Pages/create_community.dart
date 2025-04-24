@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/bottomsheet.dart';
-import 'package:reddit_attempt2/Pages/createPost.dart';
+import 'package:reddit_attempt2/Pages/create_post.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:reddit_attempt2/firebase_auth_implementation/firebase_auth.dart';
 
@@ -19,12 +19,12 @@ final TextEditingController community_name = TextEditingController();
   //chat and auth services
   final FirebaseAuthImplementation auth=FirebaseAuthImplementation();
   final FirestoreService firestoreservice= FirestoreService();
-  late List<String> members;
+  late List<String> members=[];
 
 
   void createCommunity (context) async {
     await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID, adult, members);
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Createpost()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CreatepostV1()));
   }
 
 

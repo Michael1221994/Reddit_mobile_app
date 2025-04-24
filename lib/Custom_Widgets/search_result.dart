@@ -19,9 +19,17 @@ class SearchResult extends StatelessWidget {
       onTap: ontap,
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(),
           borderRadius: BorderRadius.circular(20), 
           ),
+
+          child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(description),
+            if (adult) const Text("18+ Community", style: TextStyle(color: Colors.red)),
+          ],
+        ),
       ),
     );
   }

@@ -4,13 +4,13 @@ import 'package:reddit_attempt2/Services/firestore.dart';
 
 
 class postTo extends StatelessWidget {
-  const postTo({super.key});
+   postTo({super.key});
+      final FirestoreService firestore= FirestoreService();
+
 
   @override
   Widget build(BuildContext context) {
-    final FirestoreService firestore= FirestoreService();
     TextEditingController post_To = TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.cancel_sharp, color: Colors.black,)),
@@ -18,6 +18,7 @@ class postTo extends StatelessWidget {
       ),
 
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -49,11 +50,41 @@ class postTo extends StatelessWidget {
               ),
           ),
 
-            SingleChildScrollView(
-              child: ListView.builder(
-                itemBuilder: SearchResult();
+           
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FutureBuilder<List<Community>>(
+                    future: firestore.fetchcommunity(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Text("No communities found.");
+                      } else {
+                        final communities = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: communities.length,
+                          itemBuilder: (context, index) {
+                            final c = communities[index];
+                            return SearchResult(
+                              name: c.name,
+                              description: c.description,
+                              adult: c.adult,
+                              ontap: () {
+                                print("Tapped ${c.name}");
+                              },
+                            );
+                          },
+                        );
+                  }
+                              },
+                            ),
                 ),
-            )
+              )
+
         ],
       ),
     );
