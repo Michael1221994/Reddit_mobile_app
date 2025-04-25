@@ -100,6 +100,7 @@ Future<List<Community>> fetchcommunity() async {
       name: data['community_name'],
       description: data['community_description'],
       adult: data['adult'] ?? false,
+      members: data['members']
     );
   }).toList();
 }
@@ -435,6 +436,7 @@ class Community {
   final String name;
   final String description;
   final bool adult;
+  final List<String> members;
 
-  Community({required this.name, required this.description, required this.adult});
+  Community({required this.name, required this.description, required this.adult, required this.members});
 }

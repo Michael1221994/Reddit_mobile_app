@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/search_result.dart';
+import 'package:reddit_attempt2/Pages/community_view_page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 
 
@@ -74,6 +75,7 @@ class postTo extends StatelessWidget {
                               description: c.description,
                               adult: c.adult,
                               ontap: () {
+                                goto_community_view(c.name, c.description, c.adult, c.members, context);
                                 print("Tapped ${c.name}");
                               },
                             );
@@ -88,5 +90,9 @@ class postTo extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void goto_community_view(String name, String description, bool adult, List<String> members, BuildContext context){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => communityView( community_name:name,community_description :description, adult:adult, members:members)));
   }
 }
