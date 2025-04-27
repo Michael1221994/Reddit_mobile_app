@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
 import 'package:reddit_attempt2/Pages/postTo_Page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
+import 'package:http/http.dart' as http;
+import 'package:cloudinary_url_gen/cloudinary.dart';
 
 class CreatepostV1 extends StatefulWidget {
   const CreatepostV1({super.key});
@@ -74,6 +78,28 @@ void create_post(){
   var user = auth.currentUser;
 
 }
+
+Future<Uri> uploadImage() async {
+  final url = Uri.parse('cloudinary://134133616429799:DqmIoYH4rU74EqJ44bF59m8eqCQ@dsqlubyvz');
+  final request = http.MultipartRequest('POST', url);
+  request.fields['upload_preset'] = 'Reddit_attempt';
+  request.files.add(await http.MultipartFile.fromPath('file', _image!.path));
+  
+  final response = await request.send();
+  final responseData = await response.stream.bytesToString();
+  
+  if (response.statusCode == 200) {
+    final responseData = await response.stream.toBytes();
+    final responseString =String.fromCharCodes(responseData);
+    final jsonMap = jsonDecode(responseString);
+    setState(() {
+      final url = jsonMap['url'];
+      final _imageUrl = url;
+    });
+    return url;
+  } else {
+    throw Exception('Upload failed with status ${response.statusCode}. Response: $responseData');
+  } }
 
   List<int> pollIndices = []; // Track added polls
   final ImagePicker _picker = ImagePicker();

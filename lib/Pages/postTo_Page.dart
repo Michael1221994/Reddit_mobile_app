@@ -94,5 +94,6 @@ class postTo extends StatelessWidget {
 
   void goto_community_view(String name, String description, bool adult, List<String> members, BuildContext context){
     Navigator.push(context, MaterialPageRoute(builder: (context) => communityView( community_name:name,community_description :description, adult:adult, members:members)));
+    
   }
 }

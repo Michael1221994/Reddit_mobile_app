@@ -37,9 +37,8 @@ class FirestoreService {
   DateTime oneyearago= DateTime.now().subtract(Duration(days: 365));
 
   //Create the different documents on Firestore 
-  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String? title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String>? flaires,Map<String, int>? pollOptions,int? pollDurationDays, String? image_name, String? video_name, String link) async {  // not sure about image name, video name, post_id, link
-    return postCollection.add(
-      {
+  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String? title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String>? flaires,{String? poll_question,Map<String, int>? pollOptions,int? pollDurationDays, String? image_location, String? video_location, String? link}) async {  // not sure about image name, video name, post_id, link
+    final Map<String, dynamic> data = {
       'title': title,
       'text': Text, 
       'post_type': post_type,
@@ -50,13 +49,33 @@ class FirestoreService {
       'number_of_upvotes': 0,
       'number_of_downvotes': 0,
       'flaires': flaires,
-      'pollOptions': pollOptions,
-      'pollDurationDays': pollDurationDays,
-      'image_name': image_name,
-      'video_name': video_name,
-      'link': link
-      }
-    );
+    };
+
+    if(post_type=='poll' && poll_question!=null && pollOptions!=null && pollDurationDays!=null){
+      data['poll_question']=poll_question;
+      data['pollOptions']=pollOptions;
+      data['pollDurationDays']=pollDurationDays;
+      data['createdAt']= FieldValue.serverTimestamp();
+      };
+
+    if(post_type=='image' && image_location!=null){
+      data['image_location']=image_location;
+    };
+
+    if(post_type=='video' && video_location!=null){
+      data['video_location']=video_location;
+    };
+
+    if(post_type=='link' && link!=null){
+      data['link']=link;
+    }
+    return postCollection.add(data);
+  }
+
+  bool isPollStillActive(DateTime createdAt, int pollDurationDays){
+    final now= DateTime.now();
+    final endtime= createdAt.add(Duration(days: pollDurationDays));
+    return now.isBefore(endtime);
   }
 
   Future<Future<DocumentReference<Object?>>> createSubreddit(String subreddit_genre, String description, String user_id, String subreddit_name, String subreddit_icon_image, String subreddit_alt_name, String subreddit_background_name) async {
@@ -100,7 +119,7 @@ Future<List<Community>> fetchcommunity() async {
       name: data['community_name'],
       description: data['community_description'],
       adult: data['adult'] ?? false,
-      members: data['members']
+      members: List<String>.from(data['members'] ?? [])
     );
   }).toList();
 }
