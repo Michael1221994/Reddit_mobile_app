@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/bottomsheet.dart';
 import 'package:reddit_attempt2/Pages/create_post.dart';
@@ -76,7 +77,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
             Container(
               child: Column(
                 children: [
-                const Text("Create a Community"),
+                //const Text("Create a Community"),
                 Container(
                   height: MediaQuery.of(context).size.height*0.1,
                   
@@ -110,8 +111,8 @@ class _CreateCommunityState extends State<CreateCommunity> {
                     const Text("18+ Community"),
                     SizedBox(width: MediaQuery.of(context).size.width*0.5,),
                     Transform.scale(
-                      scale: 1.5,
-                      child: Switch(
+                      scale: 1.2,
+                      child: CupertinoSwitch(
                         value: widget.adult,
                         onChanged: (value) {
                           setState(() {
@@ -120,7 +121,7 @@ class _CreateCommunityState extends State<CreateCommunity> {
                           });
                         },
                         activeColor: Colors.blue, // Color when ON
-                        activeTrackColor: Colors.blue[200], // Track color when ON
+                        trackColor: Colors.transparent, // Track color when ON
                       ),
                     )
                    

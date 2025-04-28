@@ -22,7 +22,7 @@ class _number_of_daysState extends State<number_of_days> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: dayOptions.map((option){//this awesome howw ?
+        children: dayOptions.map((option){//this is awesome, howw ?
           return daysLimit(
             value: option, 
             groupValue: widget.initialSelection, 
