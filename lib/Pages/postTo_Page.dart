@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:reddit_attempt2/Custom_Widgets/search_result.dart';
 import 'package:reddit_attempt2/Pages/community_view_page.dart';
+import 'package:reddit_attempt2/Pages/readyToPost_page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
+import 'package:reddit_attempt2/models/postmodel.dart';
 
 
 class postTo extends StatelessWidget {
-   postTo({super.key});
+  final postData post;
+   postTo({
+    super.key,
+    required this.post
+    });
       final FirestoreService firestore= FirestoreService();
 
 
@@ -75,7 +81,8 @@ class postTo extends StatelessWidget {
                               description: c.description,
                               adult: c.adult,
                               ontap: () {
-                                goto_community_view(c.name, c.description, c.adult, c.members, context);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => readyToPost(post: post)));
+                                //goto_community_view(c.name, c.description, c.adult, c.members, context);
                                 print("Tapped ${c.name}");
                               },
                             );

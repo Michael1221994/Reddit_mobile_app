@@ -11,34 +11,13 @@ import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:reddit_attempt2/container.dart';
+import 'package:reddit_attempt2/models/postmodel.dart';
 
 class readyToPost extends StatefulWidget {
-  final String? post_type;
-  final String? title;
-  final String? Text;
-  final DateTime posted_when;
-  final String? sub_id;
-  final String? user_id; 
-  //final List<String>? flaires;
-  final String? poll_question;  
-  final Map<String, int>? pollOptions;
-  final int? pollDurationDays;
-  //final String? image_location;
-  //final String? video_location;
-  final String? link;
+  final postData post;
    readyToPost({
     super.key,
-    required this.post_type,
-    required this.title,
-    required this.Text,
-    required this.posted_when,
-    required this.sub_id,
-    required this.user_id,
-    //required this.flaires,
-    required this.poll_question,
-    required this.pollOptions,
-    required this.pollDurationDays,
-    required this.link
+    required this.post
     });
 
   @override
@@ -155,7 +134,7 @@ Future<Uri> uploadImage() async {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: isPostValid ? choose_community : null,
+                onTap: isPostValid ? create_post : null,
                 child: Container(
                   padding: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -188,7 +167,10 @@ Future<Uri> uploadImage() async {
                   onTap: open_bottomsheet,
                   child: Container(
                     decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
-                    child: Text("Flaires"),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Flaires", style: TextStyle(color: Colors.white),),
+                    ),
                   ),
                 ),
                 TextField(
@@ -298,9 +280,7 @@ void open_bottomsheet(){
     firestoreService.createPost(post_type, Title.text, bodyTextController.text, DateTime.now(), user!.uid );
   }*/
 
-  void choose_community() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo()));
-  }
+
 
 
 }

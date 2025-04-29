@@ -8,6 +8,7 @@ import 'package:reddit_attempt2/Pages/postTo_Page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:reddit_attempt2/models/postmodel.dart';
 
 class CreatepostV1 extends StatefulWidget {
   const CreatepostV1({super.key});
@@ -19,7 +20,7 @@ class CreatepostV1 extends StatefulWidget {
 class _CreatepostV1State extends State<CreatepostV1> {
   final FirebaseAuth auth= FirebaseAuth.instance;
   final FirestoreService firestoreService= FirestoreService();
-
+  final postData post= postData();
 
   TextEditingController Title=TextEditingController();
   TextEditingController bodyTextController=TextEditingController();
@@ -70,6 +71,12 @@ void _updateButtonState() {
     setState(() {
       post_type="link";
       });
+  }
+  if(poll1.text.isEmpty && poll2.text.isEmpty && _image==null && LinkController.text.isEmpty&&(Title.text.isNotEmpty || bodyTextController.text.isNotEmpty )){
+    setState(() {
+      post_type="text";
+  });
+    
   }
 }
 
@@ -249,13 +256,21 @@ Future<Uri> uploadImage() async {
     });
   } 
 
-  /*void create_Post(){
-    var user = auth.currentUser;
-    firestoreService.createPost(post_type, Title.text, bodyTextController.text, DateTime.now(), user!.uid );
-  }*/
-
   void choose_community() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo()));
+    post.title=Title.text;
+    post.text=bodyTextController.text;
+    post.link=LinkController.text;
+    post.image=_image;
+    post_type=post_type;
+    if(post_type=="poll"){
+      post.poll1=poll1.text;
+      post.poll2=poll2.text;
+      post.pollOptions=textControllers;
+    }
+    if(post_type=="image" || post_type=="video"){
+      post.image=_image;
+    }
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo(post:post)));
   }
 
 
