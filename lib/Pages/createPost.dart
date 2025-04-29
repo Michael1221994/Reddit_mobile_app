@@ -166,15 +166,7 @@ void updatePollSection() {
             SizedBox(
               height: 10,
             ),
-            //...pollIndices.map((index) => buildPollRow(index)).toList(),
-            //ListView.builder(
-              //shrinkWrap: true, // Shrink-wrap the ListView
-              //physics: NeverScrollableScrollPhysics(), // Disable scrolling for the inner ListView
-              //itemCount: pollIndices.length,
-              //itemBuilder: (context, index) {
-              //  return buildPollRow(index);
-            //},
-          //),
+          
       
           Column(
                   children: [Wrap(
@@ -229,19 +221,7 @@ Widget buildPollRow(int index) {
   );
 }
 
-//void addPoll() {
-  //if (counter < 6) {
-    //print("adding poll");
-    //setState(() {
-      //int newIndex = textControllers.length;
-      //textControllers[newIndex] = TextEditingController(); // Dynamically add a new controller to the map
-      //pollIndices.add(newIndex); // Use newIndex to track added polls correctly
-      //nextPollIndex++;
-      //newpoll.add(buildPollRow(newIndex));
-      //counter++;
-    //});
-  //}
-//}
+
 
 void removeasIsaid(){
   print("Just got called");
@@ -316,18 +296,6 @@ void removePolls(int index) {
 }
 
 
- //void removePolls(int index) {
-  //print("REMOVE POLL PRESSED");
-  //setState(() {
-    
-    //int keyToRemove = pollIndices[index];
-    //textControllers[keyToRemove]?.dispose(); // Dispose of the controller
-    //textControllers.remove(keyToRemove); // Remove controller from the map
-    //pollIndices.removeAt(index); // Adjust indices list accordingly
-    //counter--;
-    //newpoll.removeLast();
-    //newpoll.remove(buildPollRow(index));
-  //});
-//}
+ 
 
 }

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:reddit_attempt2/Custom_Widgets/flaires_bottomsheet.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
+import 'package:reddit_attempt2/Custom_Widgets/rows_for_flair_bottomsheet.dart';
 import 'package:reddit_attempt2/Pages/postTo_Page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:http/http.dart' as http;
@@ -183,7 +185,7 @@ Future<Uri> uploadImage() async {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: open_bottomsheet,
                   child: Container(
                     decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
                     child: Text("Flaires"),
@@ -226,7 +228,15 @@ Future<Uri> uploadImage() async {
   }
 
 
-
+void open_bottomsheet(){
+  showModalBottomSheet(
+    context: context, 
+    builder: (context) =>  FlairesBottomsheet(
+     onToggle: (name, value) {
+          print('Row $name toggled: $value');}
+      )
+      );
+}
   
 
   void addtextfield(){
