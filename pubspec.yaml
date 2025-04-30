@@ -44,6 +44,7 @@ dependencies:
   provider: ^6.1.4
   cloudinary_flutter: ^1.0.0
   cloudinary_url_gen: ^1.0.0
+  imagekit: ^0.0.5
 
 dev_dependencies:
   flutter_test:
