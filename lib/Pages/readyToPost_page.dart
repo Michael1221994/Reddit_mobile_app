@@ -1,23 +1,20 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reddit_attempt2/Custom_Widgets/flaires_bottomsheet.dart';
 import 'package:reddit_attempt2/Custom_Widgets/poll_build.dart';
-import 'package:reddit_attempt2/Custom_Widgets/rows_for_flair_bottomsheet.dart';
-import 'package:reddit_attempt2/Pages/postTo_Page.dart';
 import 'package:reddit_attempt2/Services/firestore.dart';
 import 'package:http/http.dart' as http;
-import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:reddit_attempt2/container.dart';
 import 'package:reddit_attempt2/models/postmodel.dart';
 
 class readyToPost extends StatefulWidget {
   final postData post;
+  final community_name;
    readyToPost({
     super.key,
-    required this.post
+    required this.post,
+    required this.community_name,
     });
 
   @override
@@ -27,7 +24,7 @@ class readyToPost extends StatefulWidget {
 class _readyToPostState extends State<readyToPost> {
   final FirebaseAuth auth= FirebaseAuth.instance;
   final FirestoreService firestoreService= FirestoreService();
-
+  List<String> flaires=[];
 
   TextEditingController Title=TextEditingController();
   TextEditingController bodyTextController=TextEditingController();
@@ -79,11 +76,32 @@ void _updateButtonState() {
       post_type="link";
       });
   }
+   if(poll1.text.isEmpty && poll2.text.isEmpty && _image==null && LinkController.text.isEmpty&&(Title.text.isNotEmpty || bodyTextController.text.isNotEmpty )){
+    setState(() {
+      post_type="text";
+  });
+    
+  }
 }
 
 
-void create_post(){
-  var user = auth.currentUser;
+void create_post()async {
+  String? user_id = auth.currentUser as String?;
+  String sub_id=await firestoreService.fetchcommunityId(widget.community_name);
+  if(post_type=='text'){
+  firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires);
+  }
+  if(post_type=='poll'){
+    firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires,poll1.text,textControllers,pollDurationDays: pollDurationDays);
+  }
+  if(post_type=='image'){
+    final url = await uploadImage();
+    firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires,image_location:url.toString());
+  }
+ 
+  if(post_type=='link'){
+    firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires,link:LinkController.text);
+  }
 
 }
 

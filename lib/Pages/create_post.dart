@@ -266,9 +266,13 @@ Future<Uri> uploadImage() async {
       post.poll1=poll1.text;
       post.poll2=poll2.text;
       post.pollOptions=textControllers;
+      post.pollDurationDays=pollDurationDays;
     }
     if(post_type=="image" || post_type=="video"){
       post.image=_image;
+    }
+    if(post_type=="link"){
+      post.link=LinkController.text;
     }
     Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo(post:post)));
   }

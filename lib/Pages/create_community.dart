@@ -24,7 +24,7 @@ final TextEditingController community_name = TextEditingController();
 
 
   void createCommunity (context) async {
-    await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID, adult, members);
+    await firestoreservice.createCommunity(community_name.text, selectedType, currentUserID,"", adult, members);
     Navigator.push(context, MaterialPageRoute(builder: (context) => CreatepostV1()));
   }
 

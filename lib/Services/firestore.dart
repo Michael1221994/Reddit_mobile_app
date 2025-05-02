@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reddit_attempt2/models/Community.dart';
 
 //import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -78,7 +79,7 @@ class FirestoreService {
     return now.isBefore(endtime);
   }
 
-  Future<Future<DocumentReference<Object?>>> createSubreddit(String subreddit_genre, String description, String user_id, String subreddit_name, String subreddit_icon_image, String subreddit_alt_name, String subreddit_background_name) async {
+ /* Future<Future<DocumentReference<Object?>>> createSubreddit(String subreddit_genre, String description, String user_id, String subreddit_name, String subreddit_icon_image, String subreddit_alt_name, String subreddit_background_name,  List<String> members) async {
     return subredditCollection.add(
       {
       'subreddit_genre': subreddit_genre,
@@ -87,18 +88,29 @@ class FirestoreService {
       'subreddit_name': subreddit_name,
       'subreddit_icon_image': subreddit_icon_image,
       'subreddit_alt': subreddit_alt_name,
-      'subreddit_background_name': subreddit_background_name
+      'subreddit_background_name': subreddit_background_name,
+      'members': members
       }
     
   );
 }
 
-Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String owner_user_id, bool adult, List<String> members  ) async {
+Future<String> fetchSubredditId (String sub_name)async {
+  final querySnapshot = await subredditCollection.where('sub_name', isEqualTo: sub_name).get();
+  final doc = querySnapshot.docs.first;
+  String Sub_Id= doc.id;
+  return Sub_Id;
+}*/
+
+Future<DocumentReference<Object?>> createCommunity(String community_name, String community_description, String owner_user_id, String subreddit_icon_image, bool adult, List<String> members,{String? subreddit_name,  String? subreddit_alt_name, String? subreddit_background_name}  ) async {
   return communityCollection.add(
     {
     'community_name': community_name,
     'community_description': community_description,
     'owner_user_id': owner_user_id,
+    'community_icon_image': subreddit_icon_image,
+    'subreddit_alt': subreddit_alt_name,
+    'subreddit_background_name': subreddit_background_name,
     'adult': adult,
     'members': members
 
@@ -119,9 +131,19 @@ Future<List<Community>> fetchcommunity() async {
       name: data['community_name'],
       description: data['community_description'],
       adult: data['adult'] ?? false,
+      community_icon_image: data['community_icon_image'],
+      subreddit_alt: data['subreddit_alt_name'],
+      subreddit_background_name: data['subreddit_background_name'],
       members: List<String>.from(data['members'] ?? [])
     );
   }).toList();
+}
+
+Future<String> fetchcommunityId(String community_name) async {
+  final querySnapshot = await communityCollection.where('community_name', isEqualTo: community_name).get();
+  final doc = querySnapshot.docs.first;
+  String community_Id= doc.id;
+  return community_Id;
 }
 
 Future<Future<DocumentReference<Object?>>> createComment(String post_id, String user_id, String comment, String sub_Id, String reply_to, DateTime commented_when, int Downvote_count, int upvote_count) async {
@@ -451,11 +473,6 @@ Stream<QuerySnapshot> getComments(String post_id) {
 }
 }
 
-class Community {
-  final String name;
-  final String description;
-  final bool adult;
-  final List<String> members;
 
-  Community({required this.name, required this.description, required this.adult, required this.members});
-}
+
+
