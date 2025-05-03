@@ -27,6 +27,7 @@ class _CreatepostV1State extends State<CreatepostV1> {
   TextEditingController poll1 = TextEditingController();
   TextEditingController poll2 = TextEditingController();
   bool containsPost=false;
+  int pollDurationDays=2;
 
   
 
@@ -238,7 +239,10 @@ Future<Uri> uploadImage() async {
   void _addPollBuild(){
     setState(() {
       if(!built&&poll.isEmpty){
-         poll.add(BuildPoll(poll1: poll1, poll2: poll2, removePoll: removePoll,));
+         poll.add(BuildPoll(poll1: poll1, poll2: poll2, removePoll: removePoll, onDaySelected: (value) {
+          print("Parent received selected value: $value");
+          // Save this in a variable or state if you want
+        },));
          built=true;
       }
       

@@ -6,12 +6,14 @@ class BuildPoll extends StatefulWidget {
   final TextEditingController poll1 ;
   final TextEditingController poll2;
   void Function()? removePoll;
+  final Function(String)? onDaySelected;
 
    BuildPoll({
     super.key,
     required this.poll1,
     required this.poll2,
     required this.removePoll,
+    this.onDaySelected, // NEW
     });
 
   Map<int, TextEditingController> textControllers = {
@@ -44,6 +46,10 @@ class _BuildPollState extends State<BuildPoll> {
             setState(() {
               selected=newType!;
             });
+          if (widget.onDaySelected != null) {
+            widget.onDaySelected!(selected); // Send it back to the parent
+          }
+
             print(selected);
           },
 
