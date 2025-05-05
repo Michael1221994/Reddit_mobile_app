@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reddit_attempt2/Pages/poll.dart';
 import 'package:reddit_attempt2/models/Community.dart';
 
 //import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -38,7 +39,7 @@ class FirestoreService {
   DateTime oneyearago= DateTime.now().subtract(Duration(days: 365));
 
   //Create the different documents on Firestore 
-  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String? title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String>? flaires,{String? poll_question,Map<String, int>? pollOptions,int? pollDurationDays, String? image_location, String? video_location, String? link}) async {  // not sure about image name, video name, post_id, link
+  Future<Future<DocumentReference<Object?>>> createPost(String? post_type, String? title, String? Text, DateTime posted_when, String? sub_id, String? user_id, List<String>? flaires, {String? poll1, String? poll2,Map<int, String>? pollOptions,int? pollDurationDays, String? image_location, String? video_location, String? link}) async {  // not sure about image name, video name, post_id, link
     final Map<String, dynamic> data = {
       'title': title,
       'text': Text, 
@@ -52,8 +53,9 @@ class FirestoreService {
       'flaires': flaires,
     };
 
-    if(post_type=='poll' && poll_question!=null && pollOptions!=null && pollDurationDays!=null){
-      data['poll_question']=poll_question;
+    if(post_type=='poll' ){
+      data['poll1']=poll1;
+      data['poll2']=poll2;
       data['pollOptions']=pollOptions;
       data['pollDurationDays']=pollDurationDays;
       data['createdAt']= FieldValue.serverTimestamp();

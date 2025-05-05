@@ -41,6 +41,12 @@ class _readyToPostState extends State<readyToPost> {
     3: TextEditingController(), // Controller for the fourth input field
   };
 
+  Map<int, String> pollOptions = {};
+
+
+  
+
+
     @override
   void initState() {
     super.initState();
@@ -89,11 +95,25 @@ void create_post()async {
   String? user_id = auth.currentUser as String?;
   String sub_id=await firestoreService.fetchcommunityId(widget.community_name);
   if(post_type=='text'){
-  firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires);
+    firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires);
   }
   if(post_type=='poll'){
-    firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires,poll1.text,textControllers,pollDurationDays: pollDurationDays);
-  }
+    
+    firestoreService.createPost(
+    widget.post.post_type,
+     widget.post.title,
+    bodyTextController.text,
+    DateTime.now(),
+    widget.post.sub_id,
+    widget.post.user_id,
+    flaires,
+    poll1: widget.post.poll1,
+    poll2: widget.post.poll2,
+    pollOptions: widget.post.pollOptions,
+    pollDurationDays: widget.post.pollDurationDays,
+);
+
+    }
   if(post_type=='image'){
     final url = await uploadImage();
     firestoreService.createPost(Title.text, bodyTextController.text, post_type, DateTime.now(), sub_id, user_id, flaires,image_location:url.toString());

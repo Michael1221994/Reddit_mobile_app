@@ -14,7 +14,7 @@ class postData{
   String? poll_question;
   String? poll1;
   String? poll2;
-  Map<int, TextEditingController>? pollOptions;
+  Map<int, String>? pollOptions;
   int? pollDurationDays;
   XFile? image;
 
@@ -30,6 +30,8 @@ class postData{
     this.video_location,
     this.link,
     this.poll_question,
+    this.poll1,
+    this.poll2,
     this.pollOptions,
     this.pollDurationDays,
     this.image

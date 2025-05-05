@@ -38,6 +38,8 @@ class _CreatepostV1State extends State<CreatepostV1> {
     3: TextEditingController(), // Controller for the fourth input field
   };
 
+  Map<int, String> convertedPollOptions={};
+
     @override
   void initState() {
     super.initState();
@@ -265,11 +267,20 @@ Future<Uri> uploadImage() async {
     post.text=bodyTextController.text;
     post.link=LinkController.text;
     post.image=_image;
-    post_type=post_type;
+    post.post_type=post_type;
     if(post_type=="poll"){
+
+      textControllers.forEach((index, controller){
+        final text=controller.text.trim();
+        if(text.isNotEmpty){
+          convertedPollOptions[index]=text;
+        }
+
+      });
+
       post.poll1=poll1.text;
       post.poll2=poll2.text;
-      post.pollOptions=textControllers;
+      post.pollOptions=convertedPollOptions;
       post.pollDurationDays=pollDurationDays;
     }
     if(post_type=="image" || post_type=="video"){
@@ -278,7 +289,7 @@ Future<Uri> uploadImage() async {
     if(post_type=="link"){
       post.link=LinkController.text;
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo(post:post)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>  postTo(post: post)));
   }
 
 
